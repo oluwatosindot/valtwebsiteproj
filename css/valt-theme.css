@@ -47,6 +47,23 @@ p { color: #555 !important; line-height: 1.8 !important; }
 .main-menu { padding-top: 11px !important; padding-bottom: 11px !important; }
 #logo img { height: 82px !important; }
 
+/* --- FOOTER BOTTOM MOBILE ORDER --- */
+@media (max-width: 767px) {
+	.footer-bottom {
+		display: flex !important;
+		flex-direction: column !important;
+		align-items: center !important;
+		text-align: center !important;
+	}
+	.footer-bottom .footer-social {
+		order: 1 !important;
+		margin-bottom: 10px !important;
+	}
+	.footer-bottom .footer-text {
+		order: 2 !important;
+	}
+}
+
 /* --- MOBILE NAVBAR TAGLINE --- */
 .mobile-tagline {
 	display: none;
