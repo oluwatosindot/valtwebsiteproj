@@ -326,6 +326,10 @@ p { color: #555 !important; line-height: 1.8 !important; }
 	border-radius: 2px;
 }
 
+/* --- READ MORE TOGGLE --- */
+.read-more-toggle { transition: color 0.3s ease !important; }
+.read-more-toggle:hover { color: #238b7e !important; }
+
 /* --- SMOOTH TRANSITIONS EVERYWHERE --- */
 a { transition: color 0.3s ease !important; }
 a:hover { color: #2a9d8f; }
