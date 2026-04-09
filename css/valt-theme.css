@@ -180,6 +180,7 @@ p { color: #555 !important; line-height: 1.8 !important; }
 	transition: all 0.3s ease !important;
 }
 .single-popular-carusel:hover { box-shadow: 0 10px 35px rgba(0,0,0,0.12) !important; transform: translateY(-4px); }
+.single-popular-carusel .details { padding: 16px 18px 20px !important; }
 .single-popular-carusel .details h4:hover { color: #2a9d8f !important; }
 .single-blog {
 	border-radius: 12px !important;
