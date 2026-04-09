@@ -37,20 +37,11 @@ p { color: #555 !important; line-height: 1.8 !important; }
 .generic-banner a { color: #fff !important; }
 
 /* --- HEADER & NAVIGATION --- */
-#header {
-	background-color: #00455A !important;
-	background-image: url('../img/headerbg01.jpg') !important;
-	background-size: cover !important;
-	background-position: center !important;
-	background-repeat: no-repeat !important;
-}
-#header.header-scrolled {
-	background-color: rgba(0,69,90,.97) !important;
-	background-image: url('../img/headerbg01.jpg') !important;
-	background-size: cover !important;
-	background-position: center !important;
-	box-shadow: 0 2px 20px rgba(0,0,0,0.15) !important;
-}
+#header { background-color: #00455A !important; }
+#header.header-scrolled { background-color: rgba(0,69,90,.97) !important; box-shadow: 0 2px 20px rgba(0,0,0,0.15) !important; }
+
+/* --- HERO BANNER BACKGROUND --- */
+.banner-area { background-image: url('../img/headerbg01.jpg') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; }
 .main-menu { padding-top: 11px !important; padding-bottom: 11px !important; }
 #logo img { height: 82px !important; }
 
