@@ -1,0 +1,258 @@
+/* VALT Modern Restyle — Teal + Bright Theme v2 */
+
+/* --- GLOBAL TYPOGRAPHY — brighter, crisper text --- */
+body { color: #444 !important; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, h5, h6 { color: #1a1a2e !important; letter-spacing: -0.02em; }
+p { color: #555 !important; line-height: 1.8 !important; }
+.section-title h1 { color: #0a2342 !important; }
+.banner-content h1 { color: #fff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.banner-content p { color: rgba(255,255,255,0.9) !important; }
+.footer-area h4, .footer-area p, .footer-area a { color: rgba(255,255,255,0.85) !important; }
+.single-footer-widget h4 { color: #fff !important; }
+.search-course-area h1, .search-course-area p,
+.cta-one-area h1, .cta-one-area p,
+.cta-two-area h1, .cta-two-area p,
+.about-content h1, .about-content a { color: #fff !important; }
+
+/* --- TEXT ON IMAGES / DARK BACKGROUNDS — ensure visibility --- */
+.single-popular-carusel .meta h4,
+.single-popular-carusel .meta p,
+.single-popular-carusel .meta span { color: #fff !important; }
+.single-feature .title h4 { color: #fff !important; }
+.cta-one-area .wrap p,
+.cta-one-area .wrap a { color: #fff !important; }
+.cta-two-area .cta-left h1,
+.cta-two-area .cta-right a { color: #fff !important; }
+.single-cat-widget .content-details h4,
+.single-cat-widget .content-details p,
+.single-cat-widget .content-details span { color: #fff !important; }
+.search-course-area .search-course-left h1,
+.search-course-area .search-course-left p,
+.search-course-area .details-content h4,
+.search-course-area .details-content p { color: #fff !important; }
+.gallery-area .single-imgs h4,
+.gallery-area .single-imgs p { color: #fff !important; }
+.generic-banner h1,
+.generic-banner p,
+.generic-banner a { color: #fff !important; }
+
+/* --- HEADER & NAVIGATION --- */
+#header { background-color: #00455A !important; }
+.header-top { background: #00455A !important; }
+#header.header-scrolled { background-color: rgba(0,69,90,.97) !important; box-shadow: 0 2px 20px rgba(0,0,0,0.15) !important; }
+.main-menu { border-bottom: 1px solid rgba(255,255,255,0.08) !important; }
+.top-head-btn { background: #2a9d8f !important; border-radius: 4px !important; }
+.header-top .header-top-left a:hover i { color: #2a9d8f !important; }
+.nav-menu a { font-weight: 600 !important; font-size: 13px !important; letter-spacing: 0.5px !important; }
+.nav-menu li:hover > a, .nav-menu ul li:hover > a { color: #2a9d8f !important; }
+#mobile-nav ul .menu-has-children i.fa-chevron-up { color: #2a9d8f !important; }
+#mobile-nav ul .menu-item-active { color: #2a9d8f !important; }
+#header #logo h1 a, #header #logo h1 a:hover { border-left: 4px solid #2a9d8f !important; }
+
+/* --- MODERN BUTTONS — rounded, shadow, smooth transitions --- */
+.primary-btn {
+	background: linear-gradient(135deg, #2a9d8f, #238b7e) !important;
+	border-radius: 8px !important;
+	padding: 14px 32px !important;
+	font-weight: 600 !important;
+	font-size: 14px !important;
+	letter-spacing: 0.5px !important;
+	box-shadow: 0 4px 15px rgba(42,157,143,0.35) !important;
+	transition: all 0.3s ease !important;
+	border: 2px solid transparent !important;
+	line-height: 1.4 !important;
+}
+.primary-btn:hover {
+	background: linear-gradient(135deg, #238b7e, #1e7a6f) !important;
+	box-shadow: 0 6px 25px rgba(42,157,143,0.45) !important;
+	transform: translateY(-2px);
+}
+.primary-btn.white {
+	background: transparent !important;
+	border: 2px solid #fff !important;
+	box-shadow: none !important;
+}
+.primary-btn.white:hover {
+	background: #fff !important;
+	color: #2a9d8f !important;
+	box-shadow: 0 4px 15px rgba(255,255,255,0.3) !important;
+}
+.primary-btn.white:hover span { color: #2a9d8f !important; }
+.banner-content .primary-btn {
+	background: linear-gradient(135deg, #2a9d8f, #238b7e) !important;
+	padding: 16px 40px !important;
+	font-size: 15px !important;
+	border-radius: 8px !important;
+}
+.banner-content .primary-btn:hover {
+	background: #fff !important;
+	color: #2a9d8f !important;
+	box-shadow: 0 6px 25px rgba(255,255,255,0.3) !important;
+}
+
+.genric-btn {
+	border-radius: 8px !important;
+	padding: 12px 28px !important;
+	font-weight: 600 !important;
+	transition: all 0.3s ease !important;
+	letter-spacing: 0.3px !important;
+}
+.genric-btn.primary { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; border-color: transparent !important; box-shadow: 0 4px 15px rgba(42,157,143,0.3) !important; }
+.genric-btn.primary:hover { color: #2a9d8f !important; border-color: #2a9d8f !important; background: #fff !important; box-shadow: 0 4px 15px rgba(42,157,143,0.15) !important; }
+.genric-btn.primary-border { color: #2a9d8f !important; border-color: #2a9d8f !important; border-radius: 8px !important; }
+.genric-btn.primary-border:hover { background: #2a9d8f !important; color: #fff !important; box-shadow: 0 4px 15px rgba(42,157,143,0.3) !important; }
+.contact-page-area .form-area .genric-btn:hover { border-color: #2a9d8f !important; color: #2a9d8f !important; }
+
+/* --- BANNER & OVERLAY --- */
+.banner-area .overlay-bg { background: linear-gradient(135deg, rgba(10,35,66,.8), rgba(10,35,66,.65)) !important; }
+.search-course-area .overlay-bg { background: linear-gradient(135deg, rgba(10,35,66,.85), rgba(10,35,66,.7)) !important; }
+.cta-one-area .overlay-bg { background: rgba(10,35,66,.20) !important; }
+.about-banner .overlay-bg, .about-content .overlay-bg { background: linear-gradient(135deg, rgba(10,35,66,.8), rgba(10,35,66,.65)) !important; }
+.generic-banner { background: linear-gradient(135deg, #2a9d8f, #1e7a6f) !important; }
+.cta-two-area { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; }
+
+/* --- SECTION BACKGROUNDS — clean white/off-white --- */
+.review-area, .contact-page-area, .blog-page, .top-category-widget-area,
+.post-content-area, .whole-wrap, .sample-text-area, .button-area,
+.widget-wrap, .comments-area, .comment-form { background: #f8f9fa !important; }
+.right-contents ul li, .event-details-area .event-details-right .single-event-details,
+#horizontalTab .jq-tab-content-wrapper, .single-footer-widget .form-control { background: #f8f9fa !important; }
+.accordion > dt > a { background: #f8f9fa !important; border-radius: 6px !important; }
+
+/* --- FEATURE CARDS — modern with shadow and rounded corners --- */
+.single-feature .title {
+	background: rgba(255,255,255,0.15) !important;
+	border-radius: 8px 8px 0 0 !important;
+}
+.single-feature .desc-wrap {
+	border-radius: 0 0 8px 8px !important;
+	box-shadow: 0 8px 30px rgba(0,0,0,0.08) !important;
+}
+.single-feature:hover .title { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; }
+@media (max-width: 991px) { .single-feature .title { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; } }
+.single-feature:hover .desc-wrap a { color: #2a9d8f !important; }
+.single-feature .desc-wrap a {
+	font-weight: 600 !important;
+	position: relative;
+	transition: all 0.3s ease !important;
+}
+
+/* --- CARDS & CONTENT — subtle shadows, rounded --- */
+.single-popular-carusel {
+	border-radius: 12px !important;
+	overflow: hidden;
+	box-shadow: 0 5px 20px rgba(0,0,0,0.06) !important;
+	transition: all 0.3s ease !important;
+}
+.single-popular-carusel:hover { box-shadow: 0 10px 35px rgba(0,0,0,0.12) !important; transform: translateY(-4px); }
+.single-popular-carusel .details h4:hover { color: #2a9d8f !important; }
+.single-blog {
+	border-radius: 12px !important;
+	overflow: hidden;
+	transition: all 0.3s ease !important;
+}
+.single-blog:hover { box-shadow: 0 10px 35px rgba(0,0,0,0.1) !important; transform: translateY(-4px); }
+.single-blog .thumb { border-radius: 12px 12px 0 0 !important; }
+
+/* --- CAROUSEL DOTS --- */
+.owl-dot { border-radius: 50% !important; transition: all 0.3s ease !important; }
+.owl-dot.active { background: #2a9d8f !important; transform: scale(1.3); }
+
+/* --- SEARCH COURSE & EVENTS --- */
+.search-course-area .details-content .single-detials span { color: #2a9d8f !important; font-weight: 700 !important; }
+.single-carusel .detials h4:hover { color: #2a9d8f !important; }
+.search-course-area .search-course-right {
+	border-radius: 12px !important;
+	backdrop-filter: blur(10px) !important;
+}
+
+/* --- COURSE & EVENT DETAILS --- */
+.left-contents .jq-tab-menu .jq-tab-title:hover,
+.left-contents .jq-tab-menu .jq-tab-title.active { color: #2a9d8f !important; border-bottom-color: #2a9d8f !important; }
+.left-contents .desc h5:hover a { color: #2a9d8f !important; }
+.left-contents .avg-review span { color: #2a9d8f !important; }
+.left-contents .star .checked { color: #2a9d8f !important; }
+.left-contents .btn-reply:hover { background: #2a9d8f !important; border-radius: 6px !important; }
+.right-contents ul li .or { color: #2a9d8f !important; }
+.courses-page .primary-btn:hover { border-color: #2a9d8f !important; color: #2a9d8f !important; }
+.event-page-lists .primary-btn:hover { color: #2a9d8f !important; border-color: #2a9d8f !important; }
+.event-details-area .social-nav .navs a:hover { background: #2a9d8f !important; border-radius: 50% !important; }
+
+/* --- BLOG ELEMENTS --- */
+.single-blog:hover h5 { color: #2a9d8f !important; }
+.single-blog .details-btn { border-radius: 50px !important; transition: all 0.3s ease !important; }
+.single-blog .details-btn:hover { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; box-shadow: 0 4px 15px rgba(42,157,143,0.3) !important; }
+.posts-list .posts-title h3:hover { color: #2a9d8f !important; }
+.post-content-area .single-post .tags li a:hover { color: #2a9d8f !important; }
+.post-content-area .single-post .user-name a:hover,
+.post-content-area .single-post .date a:hover,
+.post-content-area .single-post .view a:hover,
+.post-content-area .single-post .comments a:hover { color: #2a9d8f !important; }
+.post-content-area .single-post .primary-btn:hover { background: linear-gradient(135deg, #238b7e, #1e7a6f) !important; }
+.blog-pagination .page-item.active .page-link { background-color: #2a9d8f !important; border-radius: 8px !important; border-color: #2a9d8f !important; }
+.blog-pagination .page-link { border-radius: 8px !important; margin: 0 3px !important; transition: all 0.3s ease !important; }
+.blog-pagination .page-link:hover { background-color: #2a9d8f !important; border-color: #2a9d8f !important; color: #fff !important; }
+.single-post-area .social-links li a:hover { color: #2a9d8f !important; }
+.comments-area .btn-reply:hover { background-color: #2a9d8f !important; border-radius: 6px !important; }
+.comment-form .primary-btn:hover { border-color: #2a9d8f !important; color: #2a9d8f !important; }
+
+/* --- SIDEBAR WIDGETS — rounded --- */
+.widget-wrap { border-radius: 12px !important; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.05) !important; }
+.widget-wrap .popular-post-widget .popular-title { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; }
+.widget-wrap .post-category-widget .category-title { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; }
+.widget-wrap .newsletter-widget .newsletter-title { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; }
+.widget-wrap .newsletter-widget .bbtns { background: #2a9d8f !important; border-radius: 6px !important; }
+.widget-wrap .tag-cloud-widget .tagcloud-title { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; }
+.widget-wrap .tag-cloud-widget ul li:hover { background: #2a9d8f !important; border-radius: 4px !important; }
+.widget-wrap .popular-post-widget .single-post-list .details h6:hover { color: #2a9d8f !important; }
+.widget-wrap .post-category-widget .cat-list li:hover { border-color: #2a9d8f !important; }
+.widget-wrap .post-category-widget .cat-list li:hover p { color: #2a9d8f !important; }
+.top-category-widget-area .single-cat-widget:hover .overlay-bg { background: rgba(42,157,143,.85) !important; }
+
+/* --- GALLERY --- */
+.gallery-area .single-imgs { border-radius: 12px !important; overflow: hidden; }
+.gallery-area .single-imgs .overlay-bg { background: rgba(42,157,143,.85) !important; }
+
+/* --- FOOTER — cleaner, modern --- */
+.footer-area { background-color: #0a2342 !important; }
+.single-footer-widget ul li a:hover { color: #2a9d8f !important; }
+.single-footer-widget .btn { background: #2a9d8f !important; border-radius: 6px !important; }
+.single-footer-widget .form-control { border-radius: 6px !important; }
+.footer-bottom .lnr, .footer-bottom a { color: #2a9d8f !important; }
+.footer-bottom .footer-social a { border-radius: 50% !important; transition: all 0.3s ease !important; }
+.footer-bottom .footer-social a:hover { background-color: #2a9d8f !important; transform: translateY(-3px); }
+.footer-bottom .footer-text { color: rgba(255,255,255,0.6) !important; }
+
+/* --- CONTACT PAGE --- */
+.contact-page-area .address-wrap .single-contact-address .lnr { color: #2a9d8f !important; }
+.contact-page-area .form-area input,
+.contact-page-area .form-area textarea { border-radius: 8px !important; border: 1px solid #e0e0e0 !important; transition: border-color 0.3s ease !important; }
+.contact-page-area .form-area input:focus,
+.contact-page-area .form-area textarea:focus { border-color: #2a9d8f !important; }
+
+/* --- ACCORDION / TOGGLE --- */
+.accordion > dt > a.active { background: linear-gradient(135deg, #2a9d8f, #238b7e) !important; border-radius: 6px !important; }
+.toggle > dt > a.active { color: #2a9d8f !important; border-color: #2a9d8f !important; }
+
+/* --- FORM ELEMENTS --- */
+.single-input-primary:focus { border-color: #2a9d8f !important; }
+.generic-blockquote { border-left-color: #2a9d8f !important; border-radius: 0 8px 8px 0 !important; }
+
+/* --- SECTION TITLES — modern underline accent --- */
+.section-title h1::after {
+	content: '';
+	display: block;
+	width: 60px;
+	height: 3px;
+	background: linear-gradient(135deg, #2a9d8f, #238b7e);
+	margin: 15px auto 0;
+	border-radius: 2px;
+}
+
+/* --- SMOOTH TRANSITIONS EVERYWHERE --- */
+a { transition: color 0.3s ease !important; }
+a:hover { color: #2a9d8f; }
+img { transition: transform 0.4s ease !important; }
+
+/* --- REVIEW STARS — gold instead of plain orange --- */
+.single-review .star .checked { color: #f0b429 !important; }
