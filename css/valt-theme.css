@@ -52,8 +52,9 @@ p { color: #555 !important; line-height: 1.8 !important; }
 	.footer-bottom {
 		display: flex !important;
 		flex-direction: column !important;
-		align-items: center !important;
-		text-align: center !important;
+		align-items: flex-start !important;
+		text-align: left !important;
+		padding-right: 80px !important;
 	}
 	.footer-bottom .footer-social {
 		order: 1 !important;
