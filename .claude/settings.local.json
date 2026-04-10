@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for f in index.html about.html courses.html course-details.html contact.html events.html event-details.html gallery.html blog-home.html blog-single.html elements.html)",
+      "Bash(do sed -i 's|<a href=\"\"index.html\"\"><img src=\"\"img/logo.jpeg\"\" alt=\"\"VALT Logo\"\" title=\"\"VALT - Changing The Future Now\"\" /></a>|<a href=\"\"index.html\"\" style=\"\"font-size: 24px; font-weight: 700; color: #0a2342; letter-spacing: 3px; text-decoration: none;\"\">VALT</a>|g' \"$f\")",
+      "Bash(done)",
+      "Bash(for f in blog-home.html blog-single.html event-details.html elements.html gallery.html events.html)",
+      "Bash(do sed -i 's|<a href=\"\"index.html\"\"><img src=\"\"img/logo.jpeg\"\" alt=\"\"\"\" title=\"\"\"\" /></a>|<a href=\"\"index.html\"\" style=\"\"font-size: 24px; font-weight: 700; color: #0a2342; letter-spacing: 3px; text-decoration: none;\"\">VALT</a>|g' \"$f\")",
+      "Bash(ls:*)",
+      "Bash(xargs:*)",
+      "Bash(grep:*)",
+      "Bash(cd:*)",
+      "Bash(python3 -c \":*)",
+      "Bash(python3:*)",
+      "Skill(update-config)",
+      "Bash(claude remote-control:*)",
+      "Bash(npm audit:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)",
+      "Bash(node -e \"require\\(''helmet''\\); console.log\\(''helmet OK''\\)\")",
+      "Bash(git mv:*)",
+      "Bash(node -e \":*)"
+    ]
+  }
+}

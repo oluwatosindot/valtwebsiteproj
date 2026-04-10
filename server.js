@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const rateLimit = require('express-rate-limit');
@@ -26,8 +27,28 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// Security headers (CSP, X-Frame-Options, HSTS, nosniff, Referrer-Policy, etc.)
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc:  ["'self'"],
+      scriptSrc:   ["'self'"],
+      styleSrc:    ["'self'", 'fonts.googleapis.com', "'unsafe-inline'"],
+      fontSrc:     ["'self'", 'fonts.gstatic.com'],
+      imgSrc:      ["'self'", 'data:'],
+      connectSrc:  ["'self'"],
+      frameSrc:    ["'none'"],
+      objectSrc:   ["'none'"],
+    },
+  },
+}));
+app.disable('x-powered-by');
+
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  methods: ['GET', 'POST'],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -48,8 +69,8 @@ const newsletterLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Static files
-app.use(express.static(path.join(__dirname)));
+// Static files — serve ONLY the public/ subfolder, not the project root
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Email transporter
 const transporter = nodemailer.createTransport({
@@ -256,7 +277,7 @@ app.post('/api/newsletter', newsletterLimiter, async (req, res) => {
 
 // Fallback: serve index.html for root
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server
