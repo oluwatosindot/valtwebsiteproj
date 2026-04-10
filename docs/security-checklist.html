@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔒 Web Security Checklist</title>
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    AI AGENT USAGE INSTRUCTIONS                             ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  HOW TO USE THIS FILE AS AN AI AGENT:                                      ║
+║                                                                            ║
+║  1. Read each checklist item in CHECKLIST_DATA below.                      ║
+║  2. Audit the project's code, config, and infrastructure for that control. ║
+║  3. Edit the AUDIT_RESULTS object with your findings:                      ║
+║       "s{section}-{item}": "pass" | "fail" | "risk" | "na"                ║
+║       Example: "s1-1": "pass"  means Section 1 Item 1 passed              ║
+║  4. Edit the AUDIT_NOTES object to explain each finding:                   ║
+║       "s1-2": "Password hashing uses MD5 in legacy/login.php line 42"     ║
+║  5. Save the file — it auto-renders the results when opened in a browser.  ║
+║  6. Click "Generate Report" for the full security assessment.              ║
+║                                                                            ║
+║  STATUS VALUES:                                                            ║
+║    "pass"    — Control is in place and verified                            ║
+║    "fail"    — Control is missing or broken — must fix                     ║
+║    "risk"    — Risk accepted with documented justification                 ║
+║    "na"      — Not applicable to this project                              ║
+║    "pending" — Not yet reviewed (default)                                  ║
+║                                                                            ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+<style>
+:root {
+  --bg:        #07071a;
+  --s1:        #0d0d26;
+  --s2:        #131338;
+  --border:    #1c1c48;
+  --border2:   #252560;
+  --purple:    #7c3aed;
+  --purple2:   #a78bfa;
+  --gold:      #eab308;
+  --gold2:     #fde047;
+  --pass:      #059669;
+  --pass2:     #34d399;
+  --fail:      #dc2626;
+  --fail2:     #f87171;
+  --risk:      #d97706;
+  --risk2:     #fbbf24;
+  --na:        #374151;
+  --na2:       #9ca3af;
+  --text:      #f0f0ff;
+  --muted:     #8888bb;
+  --dim:       #555588;
+  --r:         8px;
+  --r2:        14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
+
+/* ── HEADER ──────────────────────────────────────────────── */
+#app-header{position:sticky;top:0;z-index:100;background:rgba(7,7,26,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;white-space:nowrap}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--purple),var(--gold));border-radius:var(--r);display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.logo-text{font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,var(--purple2),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header-fields{display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap}
+.header-input{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:7px 12px;color:var(--text);font-size:13px;min-width:160px;flex:1;max-width:280px;transition:.2s}
+.header-input:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.2)}
+.header-input::placeholder{color:var(--dim)}
+#score-badge{display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:13px;white-space:nowrap}
+.score-num{font-size:1.3rem;font-weight:800;color:var(--gold)}
+.score-label{color:var(--muted);font-size:11px}
+#btn-report{background:linear-gradient(135deg,var(--purple),#5b21b6);color:#fff;border:none;border-radius:var(--r);padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.2s;display:flex;align-items:center;gap:6px}
+#btn-report:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,58,237,.4)}
+
+/* ── PROGRESS BAR ────────────────────────────────────────── */
+#global-progress{height:3px;background:var(--border);position:sticky;top:69px;z-index:99}
+#global-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--gold));transition:width .4s}
+
+/* ── STATS BAR ───────────────────────────────────────────── */
+#stats-bar{display:flex;gap:6px;padding:14px 24px;overflow-x:auto;flex-wrap:wrap}
+.stat-pill{display:flex;align-items:center;gap:6px;background:var(--s1);border:1px solid var(--border);border-radius:100px;padding:5px 14px;font-size:12px;white-space:nowrap}
+.stat-pill .dot{width:8px;height:8px;border-radius:50%}
+.dot-pass{background:var(--pass2)}
+.dot-fail{background:var(--fail2)}
+.dot-risk{background:var(--risk2)}
+.dot-na{background:var(--na2)}
+.dot-pend{background:var(--dim)}
+.stat-count{font-weight:700;font-size:14px;color:var(--text)}
+
+/* ── MAIN LAYOUT ─────────────────────────────────────────── */
+#main{max-width:1100px;margin:0 auto;padding:20px 24px 80px}
+.section-grid{display:grid;gap:16px}
+
+/* ── SECTION CARD ────────────────────────────────────────── */
+.sec-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:.2s}
+.sec-card:hover{border-color:var(--border2)}
+.sec-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none;transition:.15s}
+.sec-header:hover{background:rgba(255,255,255,.03)}
+.sec-icon{font-size:20px;width:36px;text-align:center;flex-shrink:0}
+.sec-title{font-weight:600;font-size:.95rem;flex:1}
+.sec-meta{display:flex;align-items:center;gap:10px}
+.sec-score{font-size:11px;color:var(--muted);white-space:nowrap}
+.sec-pbar{width:80px;height:5px;background:var(--border);border-radius:4px;overflow:hidden;flex-shrink:0}
+.sec-pbar-fill{height:100%;border-radius:4px;transition:width .4s}
+.sec-chevron{color:var(--muted);font-size:12px;transition:transform .25s;flex-shrink:0}
+.sec-card.open .sec-chevron{transform:rotate(180deg)}
+
+/* ── ITEMS LIST ──────────────────────────────────────────── */
+.sec-body{display:none;border-top:1px solid var(--border)}
+.sec-card.open .sec-body{display:block}
+.item-row{display:flex;align-items:flex-start;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.04);transition:.15s}
+.item-row:last-child{border-bottom:none}
+.item-row:hover{background:rgba(255,255,255,.025)}
+.item-num{font-size:11px;color:var(--dim);padding-top:2px;min-width:32px;font-weight:600}
+.item-content{flex:1;min-width:0}
+.item-text{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:8px}
+.item-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.status-btn{border:none;border-radius:6px;padding:4px 11px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s;letter-spacing:.3px}
+.status-btn:hover{transform:translateY(-1px)}
+.btn-pass{background:rgba(5,150,105,.15);color:var(--pass2);border:1px solid rgba(52,211,153,.25)}
+.btn-pass.active{background:var(--pass);color:#fff;border-color:var(--pass)}
+.btn-fail{background:rgba(220,38,38,.15);color:var(--fail2);border:1px solid rgba(248,113,113,.25)}
+.btn-fail.active{background:var(--fail);color:#fff;border-color:var(--fail)}
+.btn-risk{background:rgba(217,119,6,.15);color:var(--risk2);border:1px solid rgba(251,191,36,.25)}
+.btn-risk.active{background:var(--risk);color:#fff;border-color:var(--risk)}
+.btn-na{background:rgba(55,65,81,.3);color:var(--na2);border:1px solid rgba(156,163,175,.2)}
+.btn-na.active{background:var(--na);color:#fff;border-color:var(--na)}
+.item-note{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:var(--muted);font-size:12px;resize:none;height:32px;transition:.2s;font-family:inherit}
+.item-note:focus{outline:none;border-color:var(--purple);color:var(--text);height:60px}
+.item-note::placeholder{color:var(--dim)}
+
+/* ── STATUS INDICATOR (left bar on row) ──────────────────── */
+.item-row[data-status="pass"]{border-left:3px solid var(--pass)}
+.item-row[data-status="fail"]{border-left:3px solid var(--fail);background:rgba(220,38,38,.04)}
+.item-row[data-status="risk"]{border-left:3px solid var(--risk);background:rgba(217,119,6,.04)}
+.item-row[data-status="na"]{border-left:3px solid var(--na);opacity:.6}
+
+/* ── REPORT OVERLAY ──────────────────────────────────────── */
+#report-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);overflow-y:auto;padding:24px 16px}
+#report-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+#report-box{background:var(--s1);border:1px solid var(--border2);border-radius:var(--r2);max-width:860px;width:100%;padding:0;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.6)}
+.rpt-header{background:linear-gradient(135deg,#1a0a3e 0%,#0a0a2e 100%);padding:32px 36px;border-bottom:1px solid var(--border)}
+.rpt-header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.rpt-title{font-size:1.5rem;font-weight:800;color:var(--text)}
+.rpt-subtitle{color:var(--muted);font-size:13px;margin-top:4px}
+#btn-close-report{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:var(--r);padding:8px 16px;color:var(--text);cursor:pointer;font-size:13px;transition:.2s;flex-shrink:0}
+#btn-close-report:hover{background:rgba(255,255,255,.2)}
+.rpt-score-row{display:flex;align-items:center;gap:24px;margin-top:24px;flex-wrap:wrap}
+.rpt-score-circle{width:90px;height:90px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:4px solid;flex-shrink:0}
+.rpt-score-big{font-size:1.8rem;font-weight:900;line-height:1}
+.rpt-score-pct{font-size:11px;font-weight:600;opacity:.8}
+.rpt-grade{font-size:3rem;font-weight:900;line-height:1}
+.rpt-grade-label{font-size:13px;color:var(--muted)}
+.rpt-summary-pills{display:flex;gap:8px;flex-wrap:wrap}
+.rpt-pill{display:flex;flex-direction:column;align-items:center;background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:10px 16px;min-width:70px}
+.rpt-pill-num{font-size:1.4rem;font-weight:800}
+.rpt-pill-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.rpt-body{padding:28px 36px;display:flex;flex-direction:column;gap:24px}
+.rpt-section-title{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.rpt-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.rpt-issues{display:flex;flex-direction:column;gap:6px}
+.rpt-issue{border-radius:var(--r);padding:10px 14px;font-size:13px;border:1px solid}
+.rpt-issue.fail{background:rgba(220,38,38,.08);border-color:rgba(220,38,38,.3);color:var(--fail2)}
+.rpt-issue.risk{background:rgba(217,119,6,.08);border-color:rgba(217,119,6,.3);color:var(--risk2)}
+.rpt-issue-id{font-weight:700;margin-right:8px;opacity:.8}
+.rpt-issue-note{display:block;font-size:11px;opacity:.7;margin-top:2px}
+.rpt-section-rows{display:flex;flex-direction:column;gap:6px}
+.rpt-sec-row{display:flex;align-items:center;gap:12px;font-size:13px}
+.rpt-sec-name{flex:1;color:var(--muted)}
+.rpt-sec-counts{display:flex;gap:6px;font-size:11px;font-weight:700}
+.rpt-sec-bar{width:140px;height:6px;background:var(--border);border-radius:4px;overflow:hidden;flex-shrink:0}
+.rpt-sec-bar-fill{height:100%;border-radius:4px}
+.rpt-sec-pct{font-size:11px;color:var(--muted);min-width:32px;text-align:right}
+.rpt-empty{color:var(--dim);font-size:13px;font-style:italic;padding:4px 0}
+.rpt-footer{padding:20px 36px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;background:rgba(0,0,0,.15)}
+.rpt-footer-meta{color:var(--dim);font-size:12px}
+#btn-print{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:8px 18px;color:var(--text);cursor:pointer;font-size:13px;transition:.2s;display:flex;align-items:center;gap:6px}
+#btn-print:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── RESET BTN ───────────────────────────────────────────── */
+#btn-reset{background:transparent;border:1px solid var(--border);border-radius:var(--r);padding:7px 14px;color:var(--muted);font-size:12px;cursor:pointer;transition:.2s}
+#btn-reset:hover{border-color:var(--fail);color:var(--fail)}
+
+/* ── PRINT STYLES ────────────────────────────────────────── */
+@media print{
+  body{background:#fff;color:#000}
+  #app-header,#global-progress,#stats-bar,#main,#btn-close-report,#btn-print,#btn-reset{display:none!important}
+  #report-overlay{display:block!important;position:static;background:none;padding:0}
+  #report-box{border:none;box-shadow:none;max-width:100%}
+  .rpt-header{background:#f0f0f0;color:#000}
+  .rpt-issue.fail{background:#fee;border-color:#fcc}
+  .rpt-issue.risk{background:#fff7e6;border-color:#ffd}
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:600px){
+  #app-header{padding:12px 16px}
+  #main{padding:14px 14px 80px}
+  .rpt-body,.rpt-header,.rpt-footer{padding-left:20px;padding-right:20px}
+  .sec-header{padding:14px 16px}
+  .item-row{padding:10px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────────── -->
+<header id="app-header">
+  <div class="logo">
+    <div class="logo-icon">🔒</div>
+    <span class="logo-text">Security Checklist</span>
+  </div>
+  <div class="header-fields">
+    <input class="header-input" id="inp-project" placeholder="Project name…" />
+    <input class="header-input" id="inp-auditor" placeholder="Auditor name…" style="max-width:200px"/>
+  </div>
+  <div id="score-badge">
+    <div>
+      <div class="score-num" id="hdr-score">—</div>
+      <div class="score-label">SECURITY SCORE</div>
+    </div>
+  </div>
+  <button id="btn-reset" onclick="resetAll()">↺ Reset</button>
+  <button id="btn-report" onclick="openReport()">📋 Generate Report</button>
+</header>
+
+<div id="global-progress"><div id="global-progress-fill"></div></div>
+
+<!-- ── STATS BAR ────────────────────────────────────────────────── -->
+<div id="stats-bar">
+  <div class="stat-pill"><div class="dot dot-pass"></div><span class="stat-count" id="cnt-pass">0</span>&nbsp;Passed</div>
+  <div class="stat-pill"><div class="dot dot-fail"></div><span class="stat-count" id="cnt-fail">0</span>&nbsp;Failed</div>
+  <div class="stat-pill"><div class="dot dot-risk"></div><span class="stat-count" id="cnt-risk">0</span>&nbsp;Risk Accepted</div>
+  <div class="stat-pill"><div class="dot dot-na"></div><span class="stat-count" id="cnt-na">0</span>&nbsp;N/A</div>
+  <div class="stat-pill"><div class="dot dot-pend"></div><span class="stat-count" id="cnt-pend">0</span>&nbsp;Pending</div>
+  <div class="stat-pill" style="margin-left:auto"><span style="color:var(--muted)">Total</span>&nbsp;<span class="stat-count" id="cnt-total">0</span></div>
+</div>
+
+<!-- ── MAIN ─────────────────────────────────────────────────────── -->
+<main id="main"><div class="section-grid" id="checklist-root"></div></main>
+
+<!-- ── REPORT OVERLAY ────────────────────────────────────────────── -->
+<div id="report-overlay">
+  <div id="report-box">
+    <div class="rpt-header">
+      <div class="rpt-header-top">
+        <div>
+          <div class="rpt-title">🔒 Security Assessment Report</div>
+          <div class="rpt-subtitle" id="rpt-meta"></div>
+        </div>
+        <button id="btn-close-report" onclick="closeReport()">✕ Close</button>
+      </div>
+      <div class="rpt-score-row">
+        <div class="rpt-score-circle" id="rpt-circle">
+          <div class="rpt-score-big" id="rpt-score-big">—</div>
+          <div class="rpt-score-pct">/ 100</div>
+        </div>
+        <div>
+          <div class="rpt-grade" id="rpt-grade">—</div>
+          <div class="rpt-grade-label" id="rpt-grade-label">Not yet assessed</div>
+        </div>
+        <div class="rpt-summary-pills" id="rpt-pills"></div>
+      </div>
+    </div>
+    <div class="rpt-body">
+      <div>
+        <div class="rpt-section-title">🔴 Critical Issues — Must Fix</div>
+        <div class="rpt-issues" id="rpt-fails"></div>
+      </div>
+      <div>
+        <div class="rpt-section-title">🟡 Accepted Risks — Review &amp; Document</div>
+        <div class="rpt-issues" id="rpt-risks"></div>
+      </div>
+      <div>
+        <div class="rpt-section-title">📊 Section Breakdown</div>
+        <div class="rpt-section-rows" id="rpt-sections"></div>
+      </div>
+      <div>
+        <div class="rpt-section-title">💡 Recommendations</div>
+        <div id="rpt-recs" style="font-size:13px;color:var(--muted);line-height:1.8"></div>
+      </div>
+    </div>
+    <div class="rpt-footer">
+      <div class="rpt-footer-meta" id="rpt-footer-date"></div>
+      <button id="btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── CHECKLIST DATA ──────────────────────────────────────────────
+   AI AGENTS: Review each item against the project's code and config.
+   Edit AUDIT_RESULTS and AUDIT_NOTES below, then open in a browser.
+──────────────────────────────────────────────────────────────── */
+const CHECKLIST_DATA = [
+  {
+    id:1, icon:'🔐', title:'Authentication & Passwords', items:[
+      'Passwords hashed with bcrypt or Argon2 — never MD5, SHA1, or plain text',
+      'Password minimum length enforced server-side (12+ characters for sensitive apps)',
+      'Password reset uses a cryptographically random token — not sequential IDs or guessable values',
+      'Password reset tokens expire within 1 hour and are invalidated after first use',
+      'Default / test passwords never used in production (no admin/admin, password123)',
+      'Login error messages are generic — never reveal if the email OR the password was wrong',
+      'Account lockout or delay after 5–10 failed login attempts per account',
+      'Re-authentication required before sensitive actions (password change, transfer, account delete)',
+      'MFA / 2FA available for privileged accounts (admin, finance roles)',
+      'Passwords never logged, never stored in plain text anywhere',
+      'API keys and secrets stored in environment variables — never hardcoded in source code',
+      'Credentials must be secrets the user controls — not public data (ID numbers, DOB, phone)',
+    ]
+  },
+  {
+    id:2, icon:'🍪', title:'Session Management', items:[
+      'Session ID regenerated immediately after every successful login',
+      'Sessions expire after inactivity period (15–30 min for financial / sensitive apps)',
+      'Absolute session timeout enforced regardless of activity (4–8 hours max)',
+      'Session cookies: HttpOnly, Secure (HTTPS only), SameSite=Lax or Strict',
+      'Sessions fully destroyed server-side on logout — not just cookie deletion',
+      'No sensitive data stored in session beyond necessity (no passwords, card numbers)',
+      'Session IDs never appear in URLs (visible in logs, browser history, referrer headers)',
+    ]
+  },
+  {
+    id:3, icon:'💉', title:'SQL Injection', items:[
+      'All database queries use parameterized / prepared statements — no string concatenation with user input',
+      'ORM or query builder used consistently — never bypassed with raw variable strings',
+      'Native prepared statements enforced (PDO ATTR_EMULATE_PREPARES = false in PHP)',
+      'Dynamic ORDER BY / LIMIT values whitelisted from a fixed allowed list — never passed raw',
+      'Database user has minimum privileges — no DROP, no full admin access from the app',
+      'Database errors never shown to users — logged server-side only',
+      'Separate database credentials per environment (dev / staging / prod)',
+    ]
+  },
+  {
+    id:4, icon:'🧨', title:'Cross-Site Scripting (XSS)', items:[
+      'All user-supplied data HTML-escaped before rendering (htmlspecialchars, template auto-escaping)',
+      'JS output uses JSON.stringify / proper encoding — no raw echo $var inside <script> blocks',
+      'Content-Security-Policy (CSP) header is set on all responses',
+      "CSP avoids 'unsafe-inline' in script-src — uses nonces or hashes for any inline scripts",
+      'X-Content-Type-Options: nosniff header set — prevents MIME-type sniffing attacks',
+      'Rich text / HTML from users sanitised with an allowlist library (DOMPurify, HTMLPurifier)',
+      'Uploaded files cannot be served as HTML, SVG with scripts, or JavaScript from web root',
+    ]
+  },
+  {
+    id:5, icon:'🛡️', title:'Cross-Site Request Forgery (CSRF)', items:[
+      'Every state-changing form (POST/DELETE/PUT) includes a unique CSRF token',
+      'Every AJAX endpoint that mutates data validates the CSRF token server-side',
+      'CSRF token is tied to the session and validated server-side — not just present in the form',
+      'Session cookies set with SameSite=Lax or Strict (partial CSRF mitigation)',
+      'JSON APIs verify Origin or Referer header when relying on Content-Type: application/json',
+    ]
+  },
+  {
+    id:6, icon:'📎', title:'File Uploads', items:[
+      'Allowed file types whitelisted (not blocklisted) — e.g. only PDF, JPG, PNG, DOCX',
+      'MIME type validated server-side using content inspection (finfo, python-magic) — not just extension',
+      'Uploaded files stored outside web root or in directory blocked by .htaccess / nginx config',
+      'Uploaded filenames sanitised or replaced with a UUID — original name never used directly on disk',
+      'Maximum file size enforced server-side (not just MAX_FILE_SIZE in HTML)',
+      'Uploaded files never executed by the server (no PHP, .htaccess, or shell files uploadable)',
+      'Images re-processed (resized / re-encoded) to strip any embedded payloads',
+      'Malware scanning in place for uploads on high-risk apps (HR, finance, healthcare)',
+    ]
+  },
+  {
+    id:7, icon:'🔑', title:'Access Control & IDOR', items:[
+      'Every request accessing a record by ID verifies the current user owns or can access it',
+      'Authorisation checks happen server-side — never rely on client-side role checks alone',
+      'ID comparisons use strict equality with correct types (===, !==, int cast) — never loose ==',
+      'Admin and privileged pages check role/permission on every request — not just at login',
+      'API endpoints return only data belonging to the authenticated user — no cross-account leakage',
+      'Horizontal escalation tested: can User A access User B\'s data by changing an ID in the URL?',
+      'Vertical escalation tested: can a regular user reach admin-only endpoints?',
+      'Sensitive operations (approve, disburse, delete, change role) require a specific elevated permission',
+      'Permission checks fail closed — unauthenticated users denied by default when a flag is absent',
+    ]
+  },
+  {
+    id:8, icon:'🔏', title:'Sensitive Data Exposure', items:[
+      'HTTPS enforced everywhere — HTTP redirects to HTTPS (301)',
+      'Strict-Transport-Security (HSTS) header set with long max-age and includeSubDomains',
+      'Passwords, tokens, and card numbers never logged anywhere',
+      'PII (phone, ID number, email, address) not written to error logs or debug output',
+      'API responses do not expose other users\' IDs, stack traces, or internal error codes',
+      '.env files are web-inaccessible and listed in .gitignore',
+      'SQL schema files, database backups, and seed data not in a publicly accessible directory',
+      'autocomplete="off" on sensitive form fields (passwords, card numbers, ID numbers)',
+      'Sensitive data at rest encrypted in the database where required (card numbers, medical data)',
+      'Migration / setup scripts removed from production or protected then deleted after use',
+    ]
+  },
+  {
+    id:9, icon:'🪖', title:'Security Headers', items:[
+      'Content-Security-Policy header set on all responses',
+      'X-Frame-Options: SAMEORIGIN header set — prevents clickjacking',
+      'X-Content-Type-Options: nosniff header set — prevents MIME sniffing',
+      'Referrer-Policy: strict-origin-when-cross-origin header set',
+      'Strict-Transport-Security header set with includeSubDomains',
+      'Permissions-Policy header disabling unused features (camera, microphone, geolocation)',
+      'X-Powered-By and Server version headers removed — tech stack not revealed',
+    ]
+  },
+  {
+    id:10, icon:'✅', title:'Input Validation', items:[
+      'All user input validated server-side — client-side JS validation is UX only, not security',
+      'Input length limits enforced server-side (prevents DoS via massive payloads)',
+      'Numeric fields cast to int/float before use — never passed as raw strings to queries',
+      'Email addresses validated properly (filter_var FILTER_VALIDATE_EMAIL or equivalent)',
+      'Phone numbers, ID numbers, postcodes validated against expected format',
+      'File path inputs use realpath() checked against an allowed base directory (path traversal)',
+      'Shell / system calls use argument arrays — never string interpolation with user input',
+      'XML inputs parsed with external entity expansion disabled (XXE protection)',
+      'Deserialization (unserialize / pickle) never called on untrusted data',
+      'Open redirect: redirect targets validated to be internal paths only — external URLs stripped',
+    ]
+  },
+  {
+    id:11, icon:'🚨', title:'Error Handling & Info Disclosure', items:[
+      'Production error pages show a friendly message — never stack traces or database errors',
+      'Debug mode disabled in production (APP_DEBUG=false, display_errors=Off)',
+      'Error logs written server-side only — never output to the browser',
+      '404 pages do not reveal directory structure or file paths',
+      'API errors return generic messages — raw exception text never sent to the client',
+      'Framework / server version numbers hidden from HTTP headers and HTML source',
+      'Directory listing disabled (Options -Indexes in Apache, autoindex off in Nginx)',
+    ]
+  },
+  {
+    id:12, icon:'⏱️', title:'Rate Limiting & Brute Force', items:[
+      'Login endpoints rate-limited per IP (e.g. 5 attempts / 15 minutes)',
+      'Login endpoints rate-limited per account (e.g. 10 attempts, then 30-min lockout)',
+      'Password reset endpoints rate-limited per IP and per user/email',
+      'OTP / verification code endpoints rate-limited',
+      'Public API endpoints rate-limited to prevent scraping or abuse',
+      'CAPTCHA or proof-of-work on high-traffic public forms (registration, login, contact)',
+      'Monitoring alerts set up for unusual login failure spikes',
+    ]
+  },
+  {
+    id:13, icon:'📦', title:'Dependencies & Supply Chain', items:[
+      'All third-party packages kept up to date',
+      'npm audit / composer audit / pip-audit run regularly (ideally automated in CI/CD)',
+      'Package lock files committed to version control (package-lock.json, composer.lock)',
+      'No packages installed from untrusted sources (unknown GitHub forks, random URLs)',
+      'CDN-loaded scripts use Subresource Integrity (SRI) hashes',
+      'Old / abandoned packages with known CVEs identified and replaced',
+    ]
+  },
+  {
+    id:14, icon:'🏗️', title:'Infrastructure & Deployment', items:[
+      'Sensitive config stored in server environment variables — not in code or web-accessible files',
+      '.env, .git, *.sql, *.log, composer.json, package.json not web-accessible',
+      'Migration scripts and setup tools removed or disabled after deployment',
+      'Staging and dev environments use separate credentials from production',
+      'Database backups encrypted and stored offsite',
+      'Firewall: only necessary ports open (80, 443; SSH with key auth only)',
+      'SSH root login disabled; key-based authentication only',
+      'Unnecessary services and ports closed on the server',
+      'Server OS and software patched regularly — auto security updates enabled',
+      'Deployment config excludes sensitive dev-only files (tests, docs, migration scripts)',
+    ]
+  },
+  {
+    id:15, icon:'📋', title:'Logging & Monitoring', items:[
+      'Successful and failed logins logged with timestamp and IP address',
+      'Privileged actions logged with user identity (admin changes, data deletion, approvals)',
+      'Log entries include who, what, when, from where — never passwords or tokens',
+      'Logs stored in a location not accessible via the web',
+      'Log rotation configured so disk does not fill up',
+      'Alerts set up for: repeated failed logins, unexpected admin activity, error spikes',
+      'Audit trail for financial / sensitive operations is immutable (append-only, no delete)',
+    ]
+  },
+  {
+    id:16, icon:'🔌', title:'API Security', items:[
+      'All API endpoints require authentication — no unauthenticated data access',
+      'API tokens sent in Authorization header — not in query strings (appear in server logs)',
+      'Sensitive API responses include Cache-Control: no-store',
+      'GraphQL introspection disabled in production',
+      'Webhooks validate the HMAC signature of incoming payloads before processing',
+      'API endpoints rate-limited per key / user',
+    ]
+  },
+  {
+    id:17, icon:'🏪', title:'CMS & Third-Party Platforms', items:[
+      'Default admin username changed (no "admin" username in WordPress)',
+      'CMS admin login page restricted by IP or an extra authentication layer',
+      'Only necessary plugins / themes installed — unused ones deleted (not just deactivated)',
+      'All plugins and themes kept updated; auto-updates enabled where safe',
+      'In-CMS file / code editor disabled (prevents browser-based PHP / template editing)',
+      'Security plugin installed and configured (Wordfence, Sucuri for WordPress)',
+      'xmlrpc.php disabled if not needed (WordPress — common brute force target)',
+      'Third-party API tokens scoped to minimum required permissions',
+    ]
+  },
+  {
+    id:18, icon:'🚀', title:'Pre-Launch Final Checks', items:[
+      'Automated scanner run (OWASP ZAP or Burp Suite) against the staging environment',
+      'Security headers tested at securityheaders.com — score B or above',
+      'SSL/TLS graded at ssllabs.com/ssltest — aim for A or A+',
+      'Google confirms no sensitive files indexed (site:domain filetype:sql OR filetype:env)',
+      'All TODO / FIXME / HACK comments reviewed — fixed or formally documented',
+      'Debug routes, test endpoints, seed scripts removed from production build',
+      'Custom error pages in place (403, 404, 500) — no stack traces or file paths shown',
+      'Manual login test: non-admin user cannot access admin pages',
+      'Manual IDOR test: changing an ID in the URL does not return another user\'s data',
+      '.env confirmed in .gitignore and never committed (git log -- .env)',
+      'No credentials in git history (git log -p | grep -iE "password|secret|api_key")',
+    ]
+  },
+];
+
+/* ── AI AGENT: EDIT THESE TWO OBJECTS WITH YOUR AUDIT RESULTS ──
+   Keys: "s{sectionId}-{itemIndex}"  (1-based index)
+   Example: "s1-1" = Section 1 (Auth & Passwords), Item 1
+────────────────────────────────────────────────────────────── */
+const AUDIT_RESULTS = {
+  // ── Section 1: Authentication & Passwords ──
+  // VALT is a public brochure site with no user login system.
+  // Only s1-11 applies: API/SMTP secrets are stored in .env.
+  "s1-1":  "na",    // no user password system
+  "s1-2":  "na",    // no user password system
+  "s1-3":  "na",    // no password reset flow
+  "s1-4":  "na",    // no password reset tokens
+  "s1-5":  "na",    // no admin credentials in codebase
+  "s1-6":  "na",    // no login endpoint
+  "s1-7":  "na",    // no login endpoint
+  "s1-8":  "na",    // no sensitive user actions requiring re-auth
+  "s1-9":  "na",    // no privileged accounts
+  "s1-10": "na",    // no passwords anywhere
+  "s1-11": "pass",  // SMTP, DB, and all secrets loaded from .env; never hardcoded in server.js
+  "s1-12": "na",    // no user credentials of any kind
+
+  // ── Section 2: Session Management ──
+  // No sessions — stateless Node.js API accepting form submissions only.
+  "s2-1":  "na",
+  "s2-2":  "na",
+  "s2-3":  "na",
+  "s2-4":  "na",
+  "s2-5":  "na",
+  "s2-6":  "na",
+  "s2-7":  "na",
+
+  // ── Section 3: SQL Injection ──
+  "s3-1":  "pass",  // mysql2 pool.execute() with parameterized placeholders on all 3 INSERT queries
+  "s3-2":  "pass",  // mysql2 used consistently; no raw string interpolation into SQL
+  "s3-3":  "na",    // Node.js/mysql2 — not PHP PDO; native prepared statements used by default
+  "s3-4":  "pass",  // no ORDER BY or LIMIT values derived from user input
+  "s3-5":  "risk",  // DB user privileges not verifiable from code; confirm no DROP/GRANT in production
+  "s3-6":  "pass",  // catch blocks return generic messages ('Something went wrong') — no DB error leakage
+  "s3-7":  "risk",  // single .env file; separate dev/staging DB credentials not confirmed
+
+  // ── Section 4: Cross-Site Scripting (XSS) ──
+  "s4-1":  "pass",  // sanitize() (HTML entity encoding) applied to all user input before DB/email storage
+  "s4-2":  "pass",  // sanitized values used in email HTML; no raw user data echoed into script blocks
+  "s4-3":  "fail",  // no Content-Security-Policy header set anywhere in server.js
+  "s4-4":  "fail",  // no CSP at all — unsafe-inline is irrelevant but absence of CSP is the issue
+  "s4-5":  "fail",  // no X-Content-Type-Options: nosniff header set
+  "s4-6":  "na",    // no rich text / HTML editor
+  "s4-7":  "na",    // no file uploads of any kind
+
+  // ── Section 5: Cross-Site Request Forgery (CSRF) ──
+  "s5-1":  "fail",  // no CSRF tokens on /api/contact or /api/enquiry forms
+  "s5-2":  "fail",  // API endpoints accept POST with no CSRF token validation
+  "s5-3":  "fail",  // no server-side CSRF token validation
+  "s5-4":  "fail",  // no cookies used; CORS is wide open — any origin can POST to the API
+  "s5-5":  "fail",  // CORS configured with cors() and no origin whitelist; Origin header not checked
+
+  // ── Section 6: File Uploads ──
+  // No file uploads in the application.
+  "s6-1":  "na",
+  "s6-2":  "na",
+  "s6-3":  "na",
+  "s6-4":  "na",
+  "s6-5":  "na",
+  "s6-6":  "na",
+  "s6-7":  "na",
+  "s6-8":  "na",
+
+  // ── Section 7: Access Control & IDOR ──
+  // Public site — no user accounts, no protected records, no admin panel.
+  "s7-1":  "na",
+  "s7-2":  "na",
+  "s7-3":  "na",
+  "s7-4":  "na",
+  "s7-5":  "na",
+  "s7-6":  "na",
+  "s7-7":  "na",
+  "s7-8":  "na",
+  "s7-9":  "na",
+
+  // ── Section 8: Sensitive Data Exposure ──
+  "s8-1":  "fail",  // no HTTP→HTTPS redirect in server.js; relies entirely on Afrihost/cPanel to enforce
+  "s8-2":  "fail",  // no Strict-Transport-Security (HSTS) header set in server.js
+  "s8-3":  "pass",  // console.error logs error messages only — no passwords, tokens, or PII logged
+  "s8-4":  "pass",  // PII not written to error output; catch blocks log error object not user data
+  "s8-5":  "pass",  // API returns generic 500 message; no stack traces sent to client
+  "s8-6":  "pass",  // .env in .gitignore; confirmed never committed (git log -- .env shows nothing)
+  "s8-7":  "fail",  // CRITICAL: express.static(__dirname) serves entire project root — server.js, config/database.js, package.json are publicly accessible
+  "s8-8":  "na",    // contact/enquiry forms collect name, email, phone — not sensitive enough to require autocomplete=off
+  "s8-9":  "na",    // no card numbers, medical data, or high-sensitivity PII stored
+  "s8-10": "na",    // no migration or setup scripts in codebase
+
+  // ── Section 9: Security Headers ──
+  "s9-1":  "fail",  // no Content-Security-Policy header
+  "s9-2":  "fail",  // no X-Frame-Options header — site is clickjackable
+  "s9-3":  "fail",  // no X-Content-Type-Options: nosniff header
+  "s9-4":  "fail",  // no Referrer-Policy header
+  "s9-5":  "fail",  // no Strict-Transport-Security header
+  "s9-6":  "fail",  // no Permissions-Policy header
+  "s9-7":  "fail",  // Express sends X-Powered-By: Express by default; not disabled
+
+  // ── Section 10: Input Validation ──
+  "s10-1":  "pass", // required field checks (name, email, message) enforced server-side
+  "s10-2":  "fail", // no max-length enforcement on name, subject, message, or phone fields — large payload DoS possible
+  "s10-3":  "na",   // no numeric IDs sourced from user input
+  "s10-4":  "pass", // isValidEmail() regex validates email server-side before DB insert
+  "s10-5":  "na",   // phone is optional; no format validation needed for this use case
+  "s10-6":  "na",   // no file path operations
+  "s10-7":  "na",   // no shell/system calls
+  "s10-8":  "na",   // no XML parsing
+  "s10-9":  "na",   // no deserialization
+  "s10-10": "na",   // no redirect operations
+
+  // ── Section 11: Error Handling & Info Disclosure ──
+  "s11-1":  "pass", // all catch blocks return generic user-facing messages ('Something went wrong')
+  "s11-2":  "fail", // no explicit NODE_ENV=production enforcement; debug behavior depends on env config
+  "s11-3":  "pass", // errors logged via console.error (server-side only); nothing sent to browser
+  "s11-4":  "fail", // no custom 404/403/500 error pages; Express default error pages shown
+  "s11-5":  "pass", // API endpoints return only generic success/error strings
+  "s11-6":  "fail", // Express sends X-Powered-By: Express header by default (app.disable not called)
+  "s11-7":  "risk", // express.static serves directory contents; no explicit directory listing config checked
+
+  // ── Section 12: Rate Limiting & Brute Force ──
+  "s12-1":  "na",   // no login endpoint
+  "s12-2":  "na",   // no login endpoint
+  "s12-3":  "na",   // no password reset
+  "s12-4":  "na",   // no OTP
+  "s12-5":  "pass", // /api/contact and /api/enquiry: 10 req/15min per IP; /api/newsletter: 5 req/hour
+  "s12-6":  "fail", // no CAPTCHA on any form — bots can spam within rate limit windows
+  "s12-7":  "fail", // no monitoring or alerting configured for submission spikes or abuse
+
+  // ── Section 13: Dependencies & Supply Chain ──
+  "s13-1":  "fail", // 2 HIGH-severity vulnerabilities: nodemailer (3 SMTP injection CVEs) + path-to-regexp (ReDoS)
+  "s13-2":  "fail", // no CI/CD pipeline; npm audit not automated
+  "s13-3":  "pass", // package-lock.json committed to git
+  "s13-4":  "pass", // all packages are well-known (express, nodemailer, mysql2, dotenv, cors, express-rate-limit)
+  "s13-5":  "fail", // Google Fonts loaded via fonts.googleapis.com with no SRI integrity hash
+  "s13-6":  "fail", // no Dependabot, Snyk, or other automated CVE scanning configured
+
+  // ── Section 14: Infrastructure & Deployment ──
+  "s14-1":  "pass", // all secrets (SMTP, DB, email addresses) in .env loaded via process.env
+  "s14-2":  "fail", // CRITICAL: express.static(__dirname) makes server.js, config/database.js, package.json, package-lock.json publicly downloadable
+  "s14-3":  "na",   // no migration or setup scripts
+  "s14-4":  "risk", // separate dev/staging credentials not confirmed
+  "s14-5":  "risk", // database backup strategy not verifiable from code
+  "s14-6":  "risk", // firewall config not verifiable; managed by Afrihost cPanel
+  "s14-7":  "risk", // SSH config not verifiable; managed by hosting provider
+  "s14-8":  "risk", // open ports not verifiable from code audit
+  "s14-9":  "risk", // OS/software patching managed by Afrihost hosting provider
+  "s14-10": "risk", // deployment config (.cpanel.yml) not found — confirm docs/, node_modules/, .env excluded from deploy
+
+  // ── Section 15: Logging & Monitoring ──
+  "s15-1":  "na",   // no login system — no login events to log
+  "s15-2":  "na",   // no privileged admin actions
+  "s15-3":  "pass", // no sensitive data in logs; console.error captures error objects only
+  "s15-4":  "risk", // logs go to console.error — persistence depends on server/hosting setup; no file logging
+  "s15-5":  "na",   // no structured log storage to rotate
+  "s15-6":  "fail", // no alerting or monitoring for form submission abuse or errors
+  "s15-7":  "na",   // no financial or sensitive immutable operations
+
+  // ── Section 16: API Security ──
+  "s16-1":  "na",   // public contact/enquiry forms — intentionally unauthenticated; appropriate for use case
+  "s16-2":  "na",   // no auth tokens used
+  "s16-3":  "na",   // API responses contain only confirmation messages — no sensitive user data returned
+  "s16-4":  "na",   // no GraphQL
+  "s16-5":  "na",   // no incoming webhooks
+  "s16-6":  "pass", // all public endpoints covered by express-rate-limit middleware
+
+  // ── Section 17: CMS & Third-Party Platforms ──
+  "s17-1":  "na",
+  "s17-2":  "na",
+  "s17-3":  "na",
+  "s17-4":  "na",
+  "s17-5":  "na",
+  "s17-6":  "na",
+  "s17-7":  "na",
+  "s17-8":  "na",
+
+  // ── Section 18: Pre-Launch Final Checks ──
+  "s18-1":  "fail",    // no OWASP ZAP or Burp Suite scan performed yet
+  "s18-2":  "fail",    // security headers are all missing — securityheaders.com would score F
+  "s18-3":  "pending", // SSL not yet testable; site not live on valt.co.za
+  "s18-4":  "pending", // site not yet live; Google indexing check not applicable yet
+  "s18-5":  "pass",    // no TODO/FIXME/HACK comments found in server.js or frontend files
+  "s18-6":  "pending", // deployment config not confirmed — need to verify .cpanel.yml excludes sensitive files
+  "s18-7":  "fail",    // no custom 403/404/500 error pages
+  "s18-8":  "na",      // no admin panel or protected pages on this site
+  "s18-9":  "na",      // no user records accessible by ID
+  "s18-10": "pass",    // .env confirmed in .gitignore; git log -- .env confirms never committed
+  "s18-11": "pass",    // git history checked; no credentials, passwords, or secrets in commit history
+};
+
+const AUDIT_NOTES = {
+  // ── Section 3 ──
+  "s3-5":  "DB credentials come from .env. Actual MySQL user privileges (GRANT level) cannot be verified from code — confirm with Afrihost DB admin that the app user lacks DROP, CREATE, and GRANT privileges.",
+  "s3-7":  "Single .env file used for all environments. Confirm that development uses a separate database and credentials from the production valt.co.za database.",
+
+  // ── Section 4 ──
+  "s4-3":  "No Content-Security-Policy header in server.js. Add app.use() middleware to set CSP on all responses. Minimum: default-src 'self'; script-src 'self'; style-src 'self' fonts.googleapis.com; font-src fonts.gstatic.com",
+  "s4-4":  "Consequence of no CSP. Once CSP is added, avoid 'unsafe-inline' in script-src. Move any inline scripts to external .js files.",
+  "s4-5":  "Add app.use((req,res,next) => { res.setHeader('X-Content-Type-Options','nosniff'); next(); }) in server.js, or use the 'helmet' npm package to set all headers at once.",
+
+  // ── Section 5 ──
+  "s5-1":  "Contact and enquiry forms POST to /api/contact and /api/enquiry with no CSRF token. Any website can silently trigger a form submission on behalf of a visiting user. Add CSRF token validation or enforce strict CORS origin checking.",
+  "s5-4":  "CORS is configured with cors() and no options — this allows any origin (Access-Control-Allow-Origin: *). Restrict to: cors({ origin: 'https://valt.co.za' }) in production.",
+  "s5-5":  "app.use(cors()) with no origin option allows all cross-origin POST requests. Tighten to your production domain before go-live.",
+
+  // ── Section 8 ──
+  "s8-1":  "server.js has no HTTP→HTTPS redirect middleware. If Node.js handles traffic directly, add: if (req.headers['x-forwarded-proto'] !== 'https') return res.redirect(301, 'https://' + req.headers.host + req.url). If cPanel handles it at the server level, verify and document that it is enforced.",
+  "s8-2":  "Add Strict-Transport-Security header: res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains'). Easiest to add via the helmet package.",
+  "s8-7":  "CRITICAL: server.js line 52 — app.use(express.static(path.join(__dirname))) serves the entire project root. This makes server.js, config/database.js, package.json, and package-lock.json publicly downloadable at /server.js, /config/database.js etc. Fix: serve only a dedicated public/ subfolder — move HTML/CSS/JS/images into public/ and change to express.static(path.join(__dirname, 'public')).",
+
+  // ── Section 9 ──
+  "s9-1":  "No CSP header. Recommend installing the 'helmet' npm package (npm install helmet) and adding app.use(helmet()) — this sets CSP, X-Frame-Options, X-Content-Type-Options, HSTS, Referrer-Policy, and Permissions-Policy in one line.",
+  "s9-2":  "No X-Frame-Options header. Site can be embedded in an iframe by any third party (clickjacking risk). Fix with helmet or manually: res.setHeader('X-Frame-Options', 'SAMEORIGIN').",
+  "s9-7":  "Express adds X-Powered-By: Express by default. Disable with app.disable('x-powered-by') in server.js (before any routes). The helmet package does this automatically.",
+
+  // ── Section 10 ──
+  "s10-2": "server.js has no input length validation. A malicious actor can POST a message field with megabytes of text, potentially causing memory issues or slow DB inserts. Add max-length checks: if (req.body.message?.length > 2000) return res.status(400)... Similarly cap name (100 chars), subject (200 chars), phone (20 chars).",
+
+  // ── Section 11 ──
+  "s11-2": "No NODE_ENV check or explicit debug disable in server.js. Ensure the production server is started with NODE_ENV=production. Add to .env or deployment config. Some Express behaviors (stack traces in error responses) change based on this value.",
+  "s11-4": "Express returns its default error page on unhandled routes. Add a 404 handler: app.use((req,res) => res.status(404).sendFile(path.join(__dirname,'404.html'))). Create a simple custom 404.html page.",
+  "s11-6": "Disable with: app.disable('x-powered-by') as the first line after const app = express(). Or use helmet which does this automatically.",
+
+  // ── Section 12 ──
+  "s12-6": "Rate limiting (10 req/15 min) slows bots but doesn't stop them within the window. Consider adding Cloudflare Turnstile (free, GDPR-friendly) to the contact and enquiry forms before go-live.",
+
+  // ── Section 13 ──
+  "s13-1": "npm audit found 2 HIGH-severity vulnerabilities: (1) nodemailer — 3 CVEs for SMTP command injection via CRLF in transport name and envelope.size; fix: npm audit fix --force to upgrade to nodemailer@8 (breaking change — test SMTP flow after upgrade). (2) path-to-regexp — ReDoS via multiple route parameters; fix: npm audit fix (non-breaking).",
+  "s13-5": "index.html line 30 loads Google Fonts via fonts.googleapis.com with no integrity= attribute. A CDN compromise could serve malicious CSS. Add SRI hash: generate at srihash.org. Alternatively self-host the font files.",
+  "s13-6": "No Dependabot or Snyk configured. Enable GitHub Dependabot alerts on the repository (Settings → Security → Dependabot) for automated CVE notifications.",
+
+  // ── Section 14 ──
+  "s14-2": "CRITICAL (same as s8-7): express.static(__dirname) serves the whole project root. Move all public assets (HTML, CSS, JS, images) into a public/ subfolder and change to express.static(path.join(__dirname, 'public')). This ensures server.js, config/, and package files are never accessible via HTTP.",
+  "s14-10": "No .cpanel.yml file found in the project root. Without a deployment config, cPanel Git Version Control may deploy all files including node_modules/, .env (if present), docs/, and server source. Create a .cpanel.yml that explicitly defines what to deploy.",
+
+  // ── Section 15 ──
+  "s15-4": "Errors are logged to console.error. On Afrihost cPanel, console output may not be persisted. Verify that Node.js app logs are captured (check cPanel Node.js app log path). Consider adding a simple file logger for production errors.",
+
+  // ── Section 18 ──
+  "s18-1": "No automated security scan performed. Before go-live, run OWASP ZAP against the staging URL. OWASP ZAP is free and can be downloaded from zaproxy.org.",
+  "s18-2": "All 7 security headers are missing. securityheaders.com would rate this F. The fastest fix is npm install helmet and app.use(helmet()) in server.js — covers all 7 in one line.",
+  "s18-7": "No custom error pages. Add at minimum a 404.html and wire it up in server.js with a catch-all route.",
+};
+
+/* ── STATE ─────────────────────────────────────────────────────── */
+const STORAGE_KEY = 'sec_checklist_v2';
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  // Seed from AUDIT_RESULTS / AUDIT_NOTES
+  const s = { project:'VALT Academy Website', auditor:'Claude Code — April 2026', results:{}, notes:{} };
+  Object.assign(s.results, AUDIT_RESULTS);
+  Object.assign(s.notes, AUDIT_NOTES);
+  return s;
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+function resetAll(){
+  if(!confirm('Reset all checklist items to pending? This cannot be undone.')) return;
+  state = { project:'', auditor:'', results:{}, notes:{} };
+  saveState();
+  document.getElementById('inp-project').value = '';
+  document.getElementById('inp-auditor').value = '';
+  renderAll();
+}
+
+/* ── RENDER ─────────────────────────────────────────────────────── */
+function itemKey(secId, idx){ return `s${secId}-${idx+1}`; }
+
+function renderAll(){
+  const root = document.getElementById('checklist-root');
+  root.innerHTML = '';
+  CHECKLIST_DATA.forEach(sec => {
+    const card = document.createElement('div');
+    card.className = 'sec-card open';
+    card.id = `sec-${sec.id}`;
+
+    // calculate section stats
+    const secStats = getSectionStats(sec);
+
+    card.innerHTML = `
+      <div class="sec-header" onclick="toggleSection(${sec.id})">
+        <div class="sec-icon">${sec.icon}</div>
+        <div class="sec-title">${sec.id}. ${sec.title}</div>
+        <div class="sec-meta">
+          <span class="sec-score" id="sec-score-${sec.id}">${secStats.done}/${sec.items.length}</span>
+          <div class="sec-pbar"><div class="sec-pbar-fill" id="sec-pbar-${sec.id}" style="width:${secStats.pct}%;background:${secStats.color}"></div></div>
+          <span class="sec-chevron">▼</span>
+        </div>
+      </div>
+      <div class="sec-body" id="sec-body-${sec.id}">
+        ${sec.items.map((text,i) => renderItem(sec.id, i, text)).join('')}
+      </div>`;
+    root.appendChild(card);
+  });
+  updateGlobalStats();
+}
+
+function renderItem(secId, idx, text){
+  const key = itemKey(secId, idx);
+  const status = state.results[key] || 'pending';
+  const note = (state.notes[key] || '').replace(/"/g,'&quot;');
+  const statuses = ['pass','fail','risk','na'];
+  const labels = { pass:'✓ Pass', fail:'✗ Fail', risk:'⚠ Risk', na:'— N/A' };
+  const btns = statuses.map(s =>
+    `<button class="status-btn btn-${s}${status===s?' active':''}"
+      onclick="setStatus('${key}','${s}',this)">${labels[s]}</button>`
+  ).join('');
+  return `
+    <div class="item-row" id="row-${key}" data-status="${status}">
+      <div class="item-num">${secId}.${idx+1}</div>
+      <div class="item-content">
+        <div class="item-text">${text}</div>
+        <div class="item-controls">
+          ${btns}
+          <textarea class="item-note" placeholder="Add a note or finding…"
+            oninput="setNote('${key}',this.value)">${note}</textarea>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleSection(id){
+  const card = document.getElementById(`sec-${id}`);
+  card.classList.toggle('open');
+}
+
+/* ── STATUS ACTIONS ─────────────────────────────────────────────── */
+function setStatus(key, status, btn){
+  const prev = state.results[key];
+  // Toggle off if clicking the same status again
+  if(prev === status){
+    delete state.results[key];
+    status = 'pending';
+  } else {
+    state.results[key] = status;
+  }
+  saveState();
+
+  // Update row
+  const row = document.getElementById(`row-${key}`);
+  row.dataset.status = status;
+  row.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+  if(status !== 'pending') btn.classList.add('active');
+
+  // Update section bar + global stats
+  const secId = parseInt(key.split('-')[0].replace('s',''));
+  updateSectionBar(secId);
+  updateGlobalStats();
+}
+
+function setNote(key, value){
+  if(value.trim()) state.notes[key] = value;
+  else delete state.notes[key];
+  saveState();
+}
+
+/* ── STATS CALCULATION ──────────────────────────────────────────── */
+function getSectionStats(sec){
+  let pass=0,fail=0,risk=0,na=0,done=0;
+  sec.items.forEach((_,i)=>{
+    const s = state.results[itemKey(sec.id,i)] || 'pending';
+    if(s==='pass') pass++;
+    if(s==='fail') fail++;
+    if(s==='risk') risk++;
+    if(s==='na')   na++;
+    if(s!=='pending') done++;
+  });
+  const pct = sec.items.length ? Math.round(done/sec.items.length*100) : 0;
+  const color = fail>0 ? 'var(--fail)' : risk>0 ? 'var(--risk)' : pass>0||na>0 ? 'var(--pass)' : 'var(--dim)';
+  return {pass,fail,risk,na,done,pct,color};
+}
+
+function getGlobalStats(){
+  let pass=0,fail=0,risk=0,na=0,pend=0;
+  CHECKLIST_DATA.forEach(sec=>{
+    sec.items.forEach((_,i)=>{
+      const s = state.results[itemKey(sec.id,i)] || 'pending';
+      if(s==='pass') pass++;
+      else if(s==='fail') fail++;
+      else if(s==='risk') risk++;
+      else if(s==='na')   na++;
+      else pend++;
+    });
+  });
+  const reviewed = pass+fail+risk+na;
+  const total = reviewed+pend;
+  // Score: pass gets 1 point, na gets 1 point (not applicable), risk gets 0.5, fail gets 0
+  const scoreBase = pass+na;
+  const scorePossible = pass+fail+risk+na;
+  const score = scorePossible ? Math.round((scoreBase + risk*0.5)/scorePossible*100) : null;
+  return {pass,fail,risk,na,pend,total,reviewed,score};
+}
+
+function updateSectionBar(secId){
+  const sec = CHECKLIST_DATA.find(s=>s.id===secId);
+  if(!sec) return;
+  const st = getSectionStats(sec);
+  const fill = document.getElementById(`sec-pbar-${secId}`);
+  const score = document.getElementById(`sec-score-${secId}`);
+  if(fill){ fill.style.width=st.pct+'%'; fill.style.background=st.color; }
+  if(score) score.textContent = `${st.done}/${sec.items.length}`;
+}
+
+function updateGlobalStats(){
+  const g = getGlobalStats();
+  document.getElementById('cnt-pass').textContent = g.pass;
+  document.getElementById('cnt-fail').textContent = g.fail;
+  document.getElementById('cnt-risk').textContent = g.risk;
+  document.getElementById('cnt-na').textContent   = g.na;
+  document.getElementById('cnt-pend').textContent = g.pend;
+  document.getElementById('cnt-total').textContent = g.total;
+
+  const pct = Math.round((g.pass+g.na+g.risk) / Math.max(g.total,1) * 100);
+  document.getElementById('global-progress-fill').style.width = pct+'%';
+
+  if(g.score !== null){
+    document.getElementById('hdr-score').textContent = g.score;
+  } else {
+    document.getElementById('hdr-score').textContent = '—';
+  }
+}
+
+/* ── REPORT ──────────────────────────────────────────────────────── */
+function gradeInfo(score){
+  if(score>=95) return {grade:'A+',label:'Excellent — enterprise ready',color:'#22c55e'};
+  if(score>=85) return {grade:'A', label:'Strong security posture',color:'#4ade80'};
+  if(score>=75) return {grade:'B+',label:'Good — minor gaps to address',color:'#a3e635'};
+  if(score>=65) return {grade:'B', label:'Adequate — improvements needed',color:'#eab308'};
+  if(score>=50) return {grade:'C', label:'Weak — significant risks present',color:'#f97316'};
+  return              {grade:'F', label:'Critical — do not deploy',color:'#ef4444'};
+}
+
+function openReport(){
+  const g = getGlobalStats();
+  const project = document.getElementById('inp-project').value.trim() || 'Unnamed Project';
+  const auditor = document.getElementById('inp-auditor').value.trim() || 'Unknown';
+  const now = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+
+  document.getElementById('rpt-meta').textContent =
+    `${project} · Auditor: ${auditor} · ${now}`;
+  document.getElementById('rpt-footer-date').textContent =
+    `Generated ${new Date().toLocaleString()} · ${g.reviewed}/${g.total} items reviewed`;
+
+  // Score circle
+  const score = g.score !== null ? g.score : 0;
+  const gi = gradeInfo(score);
+  const circle = document.getElementById('rpt-circle');
+  circle.style.borderColor = gi.color;
+  circle.style.color = gi.color;
+  document.getElementById('rpt-score-big').textContent = g.score !== null ? score : '—';
+  document.getElementById('rpt-grade').textContent = g.score !== null ? gi.grade : '—';
+  document.getElementById('rpt-grade').style.color = gi.color;
+  document.getElementById('rpt-grade-label').textContent = g.score !== null ? gi.label : 'No items reviewed yet';
+
+  // Summary pills
+  const pillData = [
+    {num:g.pass, label:'Passed',   col:'var(--pass2)'},
+    {num:g.fail, label:'Failed',   col:'var(--fail2)'},
+    {num:g.risk, label:'Risk',     col:'var(--risk2)'},
+    {num:g.na,   label:'N/A',      col:'var(--na2)'},
+    {num:g.pend, label:'Pending',  col:'var(--dim)'},
+  ];
+  document.getElementById('rpt-pills').innerHTML = pillData.map(p=>
+    `<div class="rpt-pill">
+      <div class="rpt-pill-num" style="color:${p.col}">${p.num}</div>
+      <div class="rpt-pill-label">${p.label}</div>
+    </div>`).join('');
+
+  // Failed items
+  const failsEl = document.getElementById('rpt-fails');
+  const fails = [];
+  CHECKLIST_DATA.forEach(sec=>{
+    sec.items.forEach((text,i)=>{
+      const key = itemKey(sec.id,i);
+      if((state.results[key]||'pending')==='fail'){
+        fails.push({key, sec, idx:i, text, note:state.notes[key]||''});
+      }
+    });
+  });
+  failsEl.innerHTML = fails.length
+    ? fails.map(f=>`
+        <div class="rpt-issue fail">
+          <span class="rpt-issue-id">[${f.sec.id}.${f.idx+1}]</span>${f.text}
+          ${f.note?`<span class="rpt-issue-note">📝 ${f.note}</span>`:''}
+        </div>`).join('')
+    : '<div class="rpt-empty">✅ No failed items — great work!</div>';
+
+  // Risk items
+  const risksEl = document.getElementById('rpt-risks');
+  const risks = [];
+  CHECKLIST_DATA.forEach(sec=>{
+    sec.items.forEach((text,i)=>{
+      const key = itemKey(sec.id,i);
+      if((state.results[key]||'pending')==='risk'){
+        risks.push({key, sec, idx:i, text, note:state.notes[key]||''});
+      }
+    });
+  });
+  risksEl.innerHTML = risks.length
+    ? risks.map(r=>`
+        <div class="rpt-issue risk">
+          <span class="rpt-issue-id">[${r.sec.id}.${r.idx+1}]</span>${r.text}
+          ${r.note?`<span class="rpt-issue-note">📝 ${r.note}</span>`:''}
+        </div>`).join('')
+    : '<div class="rpt-empty">No accepted risks recorded.</div>';
+
+  // Section breakdown
+  const secsEl = document.getElementById('rpt-sections');
+  secsEl.innerHTML = CHECKLIST_DATA.map(sec=>{
+    const st = getSectionStats(sec);
+    const color = st.fail>0?'var(--fail)':st.risk>0?'var(--risk)':st.pass>0||st.na>0?'var(--pass)':'var(--dim)';
+    const pct = sec.items.length ? Math.round((st.pass+st.na)/sec.items.length*100) : 0;
+    return `
+      <div class="rpt-sec-row">
+        <span style="width:22px;text-align:center;flex-shrink:0">${sec.icon}</span>
+        <span class="rpt-sec-name">${sec.title}</span>
+        <span class="rpt-sec-counts">
+          ${st.pass>0?`<span style="color:var(--pass2)">✓${st.pass}</span>`:''}
+          ${st.fail>0?`<span style="color:var(--fail2)">✗${st.fail}</span>`:''}
+          ${st.risk>0?`<span style="color:var(--risk2)">⚠${st.risk}</span>`:''}
+          ${st.na>0?`<span style="color:var(--na2)">—${st.na}</span>`:''}
+        </span>
+        <div class="rpt-sec-bar"><div class="rpt-sec-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+        <span class="rpt-sec-pct">${st.done?pct+'%':'—'}</span>
+      </div>`;
+  }).join('');
+
+  // Recommendations
+  const recLines = [];
+  if(fails.length>0){
+    recLines.push(`<strong style="color:var(--fail2)">🔴 Priority 1 — Critical:</strong> Fix the ${fails.length} failed item${fails.length>1?'s':''} immediately. Do not deploy to production until these are resolved.`);
+  }
+  if(risks.length>0){
+    recLines.push(`<strong style="color:var(--risk2)">🟡 Priority 2 — Review Risks:</strong> ${risks.length} accepted risk${risks.length>1?'s':''} are documented. Ensure each has a written justification and a plan to address over time.`);
+  }
+  if(g.pend>0){
+    recLines.push(`<strong style="color:var(--muted)">🔵 Priority 3 — Complete Audit:</strong> ${g.pend} item${g.pend>1?'s':''} still pending review. Complete the checklist for a full picture.`);
+  }
+  recLines.push(`<strong style="color:var(--na2)">📦 Ongoing:</strong> Run <code>npm audit</code> / <code>composer audit</code> regularly. Rerun this checklist after every major feature or before every deployment.`);
+  if(g.score >= 85 && fails.length===0){
+    recLines.push(`<strong style="color:var(--pass2)">🎉 Looking good!</strong> Your security posture is strong. Schedule a formal penetration test for production at least once a year.`);
+  }
+  document.getElementById('rpt-recs').innerHTML = recLines.map(l=>`<div style="margin-bottom:8px">• ${l}</div>`).join('');
+
+  // Open overlay
+  document.getElementById('report-overlay').classList.add('open');
+}
+
+function closeReport(){
+  document.getElementById('report-overlay').classList.remove('open');
+}
+
+// Close overlay on background click
+document.getElementById('report-overlay').addEventListener('click', function(e){
+  if(e.target === this) closeReport();
+});
+
+/* ── INIT ───────────────────────────────────────────────────────── */
+document.getElementById('inp-project').value = state.project || '';
+document.getElementById('inp-auditor').value = state.auditor || '';
+document.getElementById('inp-project').addEventListener('input', e=>{
+  state.project = e.target.value; saveState();
+});
+document.getElementById('inp-auditor').addEventListener('input', e=>{
+  state.auditor = e.target.value; saveState();
+});
+
+renderAll();
+</script>
+</body>
+</html>
