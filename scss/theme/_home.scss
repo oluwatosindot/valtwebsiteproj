@@ -262,14 +262,15 @@
         }
     } 
     .details{
+        padding: 0px 15px 15px;
         h4{
             @include transition();
-            margin:20px 0px; 
+            margin:20px 0px;
             &:hover{
                 color:$primary-color!important;
             }
         }
-    }  
+    }
     @media(max-width:576px){
         margin:15px;
     }
