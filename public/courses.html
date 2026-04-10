@@ -64,61 +64,196 @@
 	    </div>
 	  </header><!-- #header -->
 
-		<!-- Start Financial Stats Area -->
-			<section class="search-course-area relative">
+		<!-- Start Programme Hero Slider -->
+			<section class="search-course-area relative" id="prog-hero">
 				<div class="overlay overlay-bg"></div>
 				<div class="container">
-					<div class="row justify-content-between align-items-center">
+					<div class="row justify-content-between align-items-center" id="prog-slide" style="transition: opacity 0.6s ease;">
 						<div class="col-lg-6 col-md-6 search-course-left">
-							<h1 class="text-white">
-								Why Financial Literacy <br>
-								Matters for Our Youth
-							</h1>
-							<p>
-								South Africa faces a financial literacy crisis. VALT's programmes equip the next generation with the knowledge and tools to break the cycle of financial hardship and build a prosperous future.
-							</p>
+							<h1 class="text-white" id="prog-title"></h1>
+							<p id="prog-desc"></p>
 							<div class="row details-content">
 								<div class="col single-detials">
-									<span class="lnr lnr-graduation-hat"></span>
-									<a href="#"><h4>Expert Facilitators</h4></a>
-									<p>
-										Seasoned entrepreneurs with over 18 years of experience in the financial industry lead our sessions.
-									</p>
+									<span class="lnr" id="prog-icon1"></span>
+									<a href="#"><h4 id="prog-feat1-title"></h4></a>
+									<p id="prog-feat1-body"></p>
 								</div>
 								<div class="col single-detials">
-									<span class="lnr lnr-license"></span>
-									<a href="#"><h4>Practical Tools</h4></a>
-									<p>
-										Interactive curriculum that goes beyond basic math, teaching practical skills for lifelong financial success.
-									</p>
+									<span class="lnr" id="prog-icon2"></span>
+									<a href="#"><h4 id="prog-feat2-title"></h4></a>
+									<p id="prog-feat2-body"></p>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-6 search-course-right section-gap">
 							<div class="form-wrap" style="padding: 30px; background: rgba(0,0,0,0.5); border-radius: 5px;">
-								<h4 class="text-white pb-20 text-center mb-30">Financial Stats in South Africa</h4>
-								<div style="text-align: center; color: #fff; margin-bottom: 20px;">
-									<h2 style="font-size: 2.5rem; color: #f8b600; margin-bottom: 5px;">80%</h2>
-									<p style="font-size: 0.9rem;">of employees think about money-related stress, 60% of the time whilst at work</p>
+								<h4 class="text-white pb-20 text-center mb-30" id="prog-stats-title"></h4>
+								<div style="text-align:center;color:#fff;margin-bottom:20px;">
+									<h2 style="font-size:2.5rem;color:#f8b600;margin-bottom:5px;" id="prog-stat1-num"></h2>
+									<p style="font-size:0.9rem;" id="prog-stat1-label"></p>
 								</div>
-								<div style="text-align: center; color: #fff; margin-bottom: 20px;">
-									<h2 style="font-size: 2.5rem; color: #f8b600; margin-bottom: 5px;">78%</h2>
-									<p style="font-size: 0.9rem;">of South Africans' income goes towards servicing debt</p>
+								<div style="text-align:center;color:#fff;margin-bottom:20px;">
+									<h2 style="font-size:2.5rem;color:#f8b600;margin-bottom:5px;" id="prog-stat2-num"></h2>
+									<p style="font-size:0.9rem;" id="prog-stat2-label"></p>
 								</div>
-								<div style="text-align: center; color: #fff; margin-bottom: 20px;">
-									<h2 style="font-size: 2.5rem; color: #f8b600; margin-bottom: 5px;">6.5%</h2>
-									<p style="font-size: 0.9rem;">of South Africans will retire comfortably</p>
+								<div style="text-align:center;color:#fff;margin-bottom:20px;">
+									<h2 style="font-size:2.5rem;color:#f8b600;margin-bottom:5px;" id="prog-stat3-num"></h2>
+									<p style="font-size:0.9rem;" id="prog-stat3-label"></p>
 								</div>
-								<div style="text-align: center; color: #fff;">
-									<h2 style="font-size: 2.5rem; color: #f8b600; margin-bottom: 5px;">20%</h2>
-									<p style="font-size: 0.9rem;">of South Africans have a valid will</p>
+								<div style="text-align:center;color:#fff;">
+									<h2 style="font-size:2.5rem;color:#f8b600;margin-bottom:5px;" id="prog-stat4-num"></h2>
+									<p style="font-size:0.9rem;" id="prog-stat4-label"></p>
 								</div>
 							</div>
 						</div>
 					</div>
+					<div style="text-align:center;padding-top:20px;padding-bottom:10px;" id="prog-dots"></div>
 				</div>
 			</section>
-			<!-- End Financial Stats Area -->
+
+			<script>
+			(function(){
+				var slides = [
+					{
+						title: "Why Financial Literacy<br>Matters for Our Youth",
+						desc: "South Africa faces a financial literacy crisis. VALT's programmes equip the next generation with the knowledge and tools to break the cycle of financial hardship and build a prosperous future.",
+						icon1: "lnr-graduation-hat", feat1Title: "Expert Facilitators",
+						feat1Body: "Seasoned entrepreneurs with over 18 years of experience in the financial industry lead our sessions.",
+						icon2: "lnr-license", feat2Title: "Practical Tools",
+						feat2Body: "Interactive curriculum that goes beyond basic math, teaching practical skills for lifelong financial success.",
+						statsTitle: "Financial Stats in South Africa",
+						s1n: "80%", s1l: "of employees think about money-related stress, 60% of the time whilst at work",
+						s2n: "78%", s2l: "of South Africans' income goes towards servicing debt",
+						s3n: "6.5%", s3l: "of South Africans will retire comfortably",
+						s4n: "20%", s4l: "of South Africans have a valid will"
+					},
+					{
+						title: "Why Emotional Intelligence<br>Shapes Our Youth",
+						desc: "EQ is a stronger predictor of success than academic grades alone. VALT equips learners with the self-awareness, resilience, and social skills to thrive in school, work, and life.",
+						icon1: "lnr-graduation-hat", feat1Title: "Holistic Development",
+						feat1Body: "We go beyond textbooks to build identity, empathy, and mental strength in every learner.",
+						icon2: "lnr-users", feat2Title: "Real-World Application",
+						feat2Body: "Learners practise skills in real social settings — from classroom dynamics to community interactions.",
+						statsTitle: "EQ Stats That Matter",
+						s1n: "85%", s1l: "of job failures are caused by poor interpersonal and social skills",
+						s2n: "90%", s2l: "of top performers score high in emotional intelligence",
+						s3n: "2x", s3l: "Students with high EQ are twice as likely to finish school successfully",
+						s4n: "58%", s4l: "of employers say EQ matters more than IQ when hiring"
+					},
+					{
+						title: "Building the Next Generation<br>of Entrepreneurs",
+						desc: "South Africa needs young people who can create jobs, not just look for them. VALT's entrepreneurship programme turns big ideas into real, actionable business skills.",
+						icon1: "lnr-rocket", feat1Title: "Start-Up Mindset",
+						feat1Body: "From idea to execution — learners build business plans, pitch decks, and brand strategies.",
+						icon2: "lnr-chart-bars", feat2Title: "Market-Ready Skills",
+						feat2Body: "Covering personal branding, marketing, social media, and networking in today's economy.",
+						statsTitle: "Entrepreneurship in SA",
+						s1n: "32%", s1l: "youth unemployment rate — SA needs more job creators, not just job seekers",
+						s2n: "90%", s2l: "of businesses fail without the right skills and financial knowledge",
+						s3n: "7 in 10", s3l: "SA youth aged 15-34 are not in employment, education, or training",
+						s4n: "3x", s4l: "more jobs created per rand by youth-owned businesses"
+					},
+					{
+						title: "Real-World Experience<br>Starts Here",
+						desc: "Classroom knowledge only goes so far. VALT's Internship programme bridges the gap between school and the working world with hands-on placements in real businesses.",
+						icon1: "lnr-briefcase", feat1Title: "Industry Placements",
+						feat1Body: "Learners are placed in partner businesses during school holidays for genuine workplace exposure.",
+						icon2: "lnr-star", feat2Title: "Career Readiness",
+						feat2Body: "Participants gain work ethic, professional communication, and practical skills employers look for.",
+						statsTitle: "Why Internships Matter",
+						s1n: "70%", s1l: "of employers prefer candidates with internship or work experience",
+						s2n: "85%", s2l: "of students say internships helped clarify their career direction",
+						s3n: "60%", s3l: "of interns receive job offers or referrals from placement companies",
+						s4n: "3x", s4l: "more likely to be employed within 6 months of graduating"
+					},
+					{
+						title: "Helping Youth Find<br>Their Direction",
+						desc: "Many learners reach Grade 12 without a clear sense of purpose or career path. VALT's Career Guidance programme helps them align their strengths with real opportunities.",
+						icon1: "lnr-graduation-hat", feat1Title: "Strengths Assessment",
+						feat1Body: "Learners discover their natural talents and how to turn them into a fulfilling career path.",
+						icon2: "lnr-diamond", feat2Title: "Goal Setting & Planning",
+						feat2Body: "Practical frameworks for setting goals, building a CV, and preparing for the world after school.",
+						statsTitle: "Career Readiness in SA",
+						s1n: "60%", s1l: "of SA youth say they don't know what career to pursue after school",
+						s2n: "40%", s2l: "of graduates work in fields unrelated to their qualification",
+						s3n: "75%", s3l: "of jobs expected to exist in 2030 don't exist today",
+						s4n: "2x", s4l: "more likely to succeed in their first role when career-guided at school"
+					},
+					{
+						title: "Healthy Minds,<br>Healthy Futures",
+						desc: "Physical and mental wellness are the foundation of academic success. VALT's Health & Fitness programme builds habits that keep learners energised, focused, and resilient.",
+						icon1: "lnr-heart-pulse", feat1Title: "Mental Wellness",
+						feat1Body: "We address stress, anxiety, and burnout through practical tools for emotional and mental health.",
+						icon2: "lnr-leaf", feat2Title: "Lifestyle Habits",
+						feat2Body: "Covering nutrition, exercise, sleep, and daily routines that fuel long-term performance.",
+						statsTitle: "Youth Health in SA",
+						s1n: "1 in 4", s1l: "SA teens experience depression or anxiety before age 18",
+						s2n: "20%", s2l: "of SA youth meet recommended daily physical activity levels",
+						s3n: "70%", s3l: "of chronic diseases in SA are lifestyle-related and preventable",
+						s4n: "25%", s4l: "improvement in academic performance linked to regular physical activity"
+					}
+				];
+
+				var current = 0;
+				var slide = document.getElementById('prog-slide');
+				var dotsWrap = document.getElementById('prog-dots');
+
+				for (var i = 0; i < slides.length; i++) {
+					(function(idx) {
+						var dot = document.createElement('span');
+						dot.style.cssText = 'display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 5px;cursor:pointer;transition:background 0.3s;';
+						dot.style.background = idx === 0 ? '#2a9d8f' : 'rgba(255,255,255,0.5)';
+						dot.addEventListener('click', function(){ goTo(idx); });
+						dotsWrap.appendChild(dot);
+					})(i);
+				}
+
+				function getDots(){ return dotsWrap.querySelectorAll('span'); }
+
+				function render(s) {
+					document.getElementById('prog-title').innerHTML = s.title;
+					document.getElementById('prog-desc').textContent = s.desc;
+					document.getElementById('prog-icon1').className = 'lnr ' + s.icon1;
+					document.getElementById('prog-feat1-title').textContent = s.feat1Title;
+					document.getElementById('prog-feat1-body').textContent = s.feat1Body;
+					document.getElementById('prog-icon2').className = 'lnr ' + s.icon2;
+					document.getElementById('prog-feat2-title').textContent = s.feat2Title;
+					document.getElementById('prog-feat2-body').textContent = s.feat2Body;
+					document.getElementById('prog-stats-title').textContent = s.statsTitle;
+					document.getElementById('prog-stat1-num').textContent = s.s1n;
+					document.getElementById('prog-stat1-label').textContent = s.s1l;
+					document.getElementById('prog-stat2-num').textContent = s.s2n;
+					document.getElementById('prog-stat2-label').textContent = s.s2l;
+					document.getElementById('prog-stat3-num').textContent = s.s3n;
+					document.getElementById('prog-stat3-label').textContent = s.s3l;
+					document.getElementById('prog-stat4-num').textContent = s.s4n;
+					document.getElementById('prog-stat4-label').textContent = s.s4l;
+				}
+
+				function goTo(idx) {
+					slide.style.opacity = '0';
+					setTimeout(function(){
+						current = idx;
+						render(slides[current]);
+						var dots = getDots();
+						for (var d = 0; d < dots.length; d++) {
+							dots[d].style.background = d === current ? '#2a9d8f' : 'rgba(255,255,255,0.5)';
+						}
+						slide.style.opacity = '1';
+					}, 350);
+				}
+
+				render(slides[0]);
+				var timer = setInterval(function(){ goTo((current + 1) % slides.length); }, 5000);
+
+				var hero = document.getElementById('prog-hero');
+				hero.addEventListener('mouseenter', function(){ clearInterval(timer); });
+				hero.addEventListener('mouseleave', function(){
+					timer = setInterval(function(){ goTo((current + 1) % slides.length); }, 5000);
+				});
+			})();
+			</script>
+			<!-- End Programme Hero Slider -->
 
 
 		<!-- Start popular-courses Area -->
