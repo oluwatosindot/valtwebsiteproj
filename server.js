@@ -70,7 +70,7 @@ const newsletterLimiter = rateLimit({
 });
 
 // Static files — serve ONLY the public/ subfolder, not the project root
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { setHeaders: (res) => res.setHeader('Cache-Control', 'no-store') }));
 
 // Email transporter
 const transporter = nodemailer.createTransport({

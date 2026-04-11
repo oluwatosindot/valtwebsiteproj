@@ -68,7 +68,7 @@
 			<section class="search-course-area relative" id="prog-hero">
 				<div class="overlay overlay-bg"></div>
 				<div class="container">
-					<div class="row justify-content-between align-items-center" id="prog-slide" style="transition: opacity 0.6s ease;">
+					<div class="row justify-content-between align-items-center" id="prog-slide" style="transition: opacity 0.25s ease;">
 						<div class="col-lg-6 col-md-6 search-course-left">
 							<h1 class="text-white" id="prog-title"></h1>
 							<p id="prog-desc"></p>
@@ -86,7 +86,7 @@
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-6 search-course-right section-gap">
-							<div class="form-wrap" style="padding: 30px; background: rgba(0,0,0,0.5); border-radius: 5px;">
+							<div class="form-wrap" style="padding: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; backdrop-filter: blur(4px);">
 								<h4 class="text-white pb-20 text-center mb-30" id="prog-stats-title"></h4>
 								<div style="text-align:center;color:#fff;margin-bottom:20px;">
 									<h2 style="font-size:2.5rem;color:#f8b600;margin-bottom:5px;" id="prog-stat1-num"></h2>
@@ -240,18 +240,13 @@
 							dots[d].style.background = d === current ? '#2a9d8f' : 'rgba(255,255,255,0.5)';
 						}
 						slide.style.opacity = '1';
-					}, 350);
+					}, 250);
 				}
 
 				render(slides[0]);
-				var timer = setInterval(function(){ goTo((current + 1) % slides.length); }, 5000);
+				render(slides[0]);
+				setInterval(function(){ goTo((current + 1) % slides.length); }, 3000);
 
-				var hero = document.getElementById('prog-hero');
-				hero.addEventListener('mouseenter', function(){ clearInterval(timer); });
-				hero.addEventListener('mouseleave', function(){
-					timer = setInterval(function(){ goTo((current + 1) % slides.length); }, 5000);
-				});
-			})();
 			</script>
 			<!-- End Programme Hero Slider -->
 
@@ -273,7 +268,7 @@
 						<div class="thumb-wrap relative">
 							<div class="thumb relative">
 								<div class="overlay overlay-bg"></div>
-								<img class="img-fluid" src="img/p1.jpg" alt="VALT 101 - Emotional Intelligence & Identity">
+								<img class="img-fluid" src="img/p1.jpg" alt="VALT 101 - Financial Literacy">
 							</div>
 							<div class="meta d-flex justify-content-between">
 								<p><span class="lnr lnr-users"></span> All Grades</p>
@@ -281,15 +276,12 @@
 							</div>
 						</div>
 						<div class="details">
-							<a href="course-details.html">
-								<h4>
-									Emotional Intelligence & Identity
-								</h4>
+							<a href="course-details.html?id=101">
+								<h4>Financial Literacy</h4>
 							</a>
-							<p>
-								We help learners develop emotional mastery, social skills, and a strong sense of identity to enhance academic performance and lifelong wellbeing.
-							</p>
-							<p><strong>Topics:</strong> Self-awareness, Self-management, Empathy, Conflict Resolution, Positive Affirmations, Mental Health, Identity Building, Habit Formation, Social Embedding</p>
+							<p>We transform teens into money-smart individuals by teaching practical tools for long-term financial independence.</p>
+							<p><strong>Topics:</strong> Budgeting & Debt Management, Introduction to Investing & Wealth Creation, Personal Tax (Grades 11-12)</p>
+							<a href="course-details.html?id=101" class="primary-btn text-uppercase" style="display:inline-block;margin-top:12px;">Enrol Now</a>
 						</div>
 					</div>
 					<!-- VALT 102 -->
@@ -297,23 +289,20 @@
 						<div class="thumb-wrap relative">
 							<div class="thumb relative">
 								<div class="overlay overlay-bg"></div>
-								<img class="img-fluid" src="img/p2.jpg" alt="VALT 102 - Financial Literacy">
+								<img class="img-fluid" src="img/p2.jpg" alt="VALT 102 - Entrepreneurship & Branding">
 							</div>
 							<div class="meta d-flex justify-content-between">
-								<p><span class="lnr lnr-users"></span> All Grades</p>
+								<p><span class="lnr lnr-users"></span> Grades 11-12</p>
 								<h4>VALT 102</h4>
 							</div>
 						</div>
 						<div class="details">
-							<a href="course-details.html">
-								<h4>
-									Financial Literacy
-								</h4>
+							<a href="course-details.html?id=102">
+								<h4>Entrepreneurship & Branding</h4>
 							</a>
-							<p>
-								We transform teens into money-smart individuals by teaching practical tools for long-term financial independence.
-							</p>
-							<p><strong>Topics:</strong> Budgeting & Debt Management, Introduction to Investing & Wealth Creation, Personal Tax (Grades 11-12)</p>
+							<p>We ignite entrepreneurial thinking and provide pathways to build meaningful personal and professional brands.</p>
+							<p><strong>Topics:</strong> Business vs Employment Pathways, Startups Marketing Networking, Business & Personal Branding, Business Tax (Grades 11-12)</p>
+							<a href="course-details.html?id=102" class="primary-btn text-uppercase" style="display:inline-block;margin-top:12px;">Enrol Now</a>
 						</div>
 					</div>
 					<!-- VALT 103 -->
@@ -321,23 +310,20 @@
 						<div class="thumb-wrap relative">
 							<div class="thumb relative">
 								<div class="overlay overlay-bg"></div>
-								<img class="img-fluid" src="img/p3.jpg" alt="VALT 103 - Internship Programme">
+								<img class="img-fluid" src="img/p3.jpg" alt="VALT 103 - Emotional Intelligence & Identity">
 							</div>
 							<div class="meta d-flex justify-content-between">
-								<p><span class="lnr lnr-users"></span> Grades 10-11</p>
+								<p><span class="lnr lnr-users"></span> All Grades</p>
 								<h4>VALT 103</h4>
 							</div>
 						</div>
 						<div class="details">
-							<a href="course-details.html">
-								<h4>
-									Internship Programme
-								</h4>
+							<a href="course-details.html?id=103">
+								<h4>Emotional Intelligence & Identity</h4>
 							</a>
-							<p>
-								Learners gain real-world experience through school holiday placements in partner businesses.
-							</p>
-							<p><strong>Topics:</strong> Workplace Exposure, Career Guidance, Skill Development</p>
+							<p>We help learners develop emotional mastery, social skills, and a strong sense of identity to enhance academic performance and lifelong wellbeing.</p>
+							<p><strong>Topics:</strong> Self-awareness, Self-management, Empathy, Conflict Resolution, Positive Affirmations, Mental Health, Identity Building, Habit Formation, Social Embedding</p>
+							<a href="course-details.html?id=103" class="primary-btn text-uppercase" style="display:inline-block;margin-top:12px;">Enrol Now</a>
 						</div>
 					</div>
 					<!-- VALT 104 -->
@@ -345,7 +331,7 @@
 						<div class="thumb-wrap relative">
 							<div class="thumb relative">
 								<div class="overlay overlay-bg"></div>
-								<img class="img-fluid" src="img/p4.jpg" alt="VALT 104 - Entrepreneurship & Branding">
+								<img class="img-fluid" src="img/p4.jpg" alt="VALT 104 - Career Guidance">
 							</div>
 							<div class="meta d-flex justify-content-between">
 								<p><span class="lnr lnr-users"></span> Grades 11-12</p>
@@ -353,15 +339,54 @@
 							</div>
 						</div>
 						<div class="details">
-							<a href="course-details.html">
-								<h4>
-									Entrepreneurship & Branding
-								</h4>
+							<a href="course-details.html?id=104">
+								<h4>Career Guidance</h4>
 							</a>
-							<p>
-								We ignite entrepreneurial thinking and provide pathways to build meaningful personal and professional brands.
-							</p>
-							<p><strong>Topics:</strong> Business vs Employment Pathways, Startups Marketing Networking, Business & Personal Branding, Business Tax (Grades 11-12)</p>
+							<p>We help learners align their strengths with real opportunities, set clear goals, and build a career that delivers purpose and results.</p>
+							<p><strong>Topics:</strong> Strengths Assessment, Career Path Planning, CV & Interview Preparation, Goal Setting, World of Work Readiness</p>
+							<a href="course-details.html?id=104" class="primary-btn text-uppercase" style="display:inline-block;margin-top:12px;">Enrol Now</a>
+						</div>
+					</div>
+					<!-- VALT 105 -->
+					<div class="single-popular-carusel col-lg-3 col-md-6">
+						<div class="thumb-wrap relative">
+							<div class="thumb relative">
+								<div class="overlay overlay-bg"></div>
+								<img class="img-fluid" src="img/p1.jpg" alt="VALT 105 - Health & Fitness">
+							</div>
+							<div class="meta d-flex justify-content-between">
+								<p><span class="lnr lnr-users"></span> All Grades</p>
+								<h4>VALT 105</h4>
+							</div>
+						</div>
+						<div class="details">
+							<a href="course-details.html?id=105">
+								<h4>Health &amp; Fitness</h4>
+							</a>
+							<p>Physical and mental wellness are the foundation of academic success. We build habits that keep learners energised, focused, and resilient.</p>
+							<p><strong>Topics:</strong> Mental Wellness, Stress & Anxiety Management, Nutrition & Sleep, Exercise Habits, Lifestyle Routines for Long-Term Performance</p>
+							<a href="course-details.html?id=105" class="primary-btn text-uppercase" style="display:inline-block;margin-top:12px;">Enrol Now</a>
+						</div>
+					</div>
+					<!-- VALT 106 -->
+					<div class="single-popular-carusel col-lg-3 col-md-6">
+						<div class="thumb-wrap relative">
+							<div class="thumb relative">
+								<div class="overlay overlay-bg"></div>
+								<img class="img-fluid" src="img/p3.jpg" alt="VALT 106 - Internship Programme">
+							</div>
+							<div class="meta d-flex justify-content-between">
+								<p><span class="lnr lnr-users"></span> Grades 10-11</p>
+								<h4>VALT 106</h4>
+							</div>
+						</div>
+						<div class="details">
+							<a href="course-details.html?id=106">
+								<h4>Internship Programme</h4>
+							</a>
+							<p>Learners gain real-world experience through school holiday placements in partner businesses across various industries.</p>
+							<p><strong>Topics:</strong> Workplace Exposure, Professional Communication, Career Readiness, Skill Development</p>
+							<a href="course-details.html?id=106" class="primary-btn text-uppercase" style="display:inline-block;margin-top:12px;">Enrol Now</a>
 						</div>
 					</div>
 					<!-- Reflective Learning -->
@@ -369,7 +394,7 @@
 						<div class="thumb-wrap relative">
 							<div class="thumb relative">
 								<div class="overlay overlay-bg"></div>
-								<img class="img-fluid" src="img/p1.jpg" alt="Reflective Learning">
+								<img class="img-fluid" src="img/p2.jpg" alt="Reflective Learning">
 							</div>
 							<div class="meta d-flex justify-content-between">
 								<p><span class="lnr lnr-users"></span> All Grades</p>
@@ -377,14 +402,11 @@
 							</div>
 						</div>
 						<div class="details">
-							<a href="course-details.html">
-								<h4>
-									Reflective Learning (Optional Add-On)
-								</h4>
+							<a href="course-details.html?id=reflective">
+								<h4>Reflective Learning (Optional Add-On)</h4>
 							</a>
-							<p>
-								A school-customised support programme designed to address behavioural challenges and foster emotional safety. Includes access to a qualified social worker and tailored content aligned with school values.
-							</p>
+							<p>A school-customised support programme designed to address behavioural challenges and foster emotional safety. Includes access to a qualified social worker and tailored content aligned with school values.</p>
+							<a href="course-details.html?id=reflective" class="primary-btn text-uppercase" style="display:inline-block;margin-top:12px;">Enrol Now</a>
 						</div>
 					</div>
 				</div>
@@ -420,10 +442,12 @@
 						<div class="single-footer-widget">
 							<h4>Our Programmes</h4>
 							<ul>
-								<li><a href="courses.html">VALT 101 - Emotional Intelligence</a></li>
-								<li><a href="courses.html">VALT 102 - Financial Literacy</a></li>
-								<li><a href="courses.html">VALT 103 - Internship Programme</a></li>
-								<li><a href="courses.html">VALT 104 - Entrepreneurship</a></li>
+								<li><a href="courses.html">VALT 101 - Financial Literacy</a></li>
+								<li><a href="courses.html">VALT 102 - Entrepreneurship &amp; Branding</a></li>
+								<li><a href="courses.html">VALT 103 - Emotional Intelligence</a></li>
+								<li><a href="courses.html">VALT 104 - Career Guidance</a></li>
+								<li><a href="courses.html">VALT 105 - Health &amp; Fitness</a></li>
+								<li><a href="courses.html">VALT 106 - Internship Programme</a></li>
 							</ul>
 						</div>
 					</div>
@@ -475,5 +499,49 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> VALT.
 			<a href="mailto:info@valt.co.za" class="float-email" aria-label="Email"><i class="fa fa-envelope"></i></a>
 		</div>
 		<!-- End Floating Contact Icons -->
+
+		<script>
+		(function() {
+			var cards = document.querySelectorAll('.courses-page .single-popular-carusel .details');
+			cards.forEach(function(details) {
+				var topicsP = details.querySelector('p:last-of-type');
+				var btn = details.querySelector('.primary-btn');
+				if (!topicsP || !btn) return;
+
+				var wrap = document.createElement('div');
+				wrap.className = 'card-extra';
+				wrap.style.cssText = 'display:none;margin-top:8px;';
+				topicsP.parentNode.insertBefore(wrap, topicsP);
+				wrap.appendChild(topicsP);
+				wrap.appendChild(btn);
+
+				var toggle = document.createElement('a');
+				toggle.href = '#';
+				toggle.className = 'read-more-toggle';
+				toggle.innerHTML = 'Read more <i class="fa fa-angle-down"></i>';
+				toggle.style.cssText = 'display:inline-block;margin-top:10px;font-size:13px;font-weight:600;color:#2a9d8f;text-decoration:none;';
+				details.appendChild(toggle);
+
+				toggle.addEventListener('click', function(e) {
+					e.preventDefault();
+					var isOpen = wrap.style.display !== 'none';
+					// Collapse all other cards first
+					cards.forEach(function(other) {
+						var otherWrap = other.querySelector('.card-extra');
+						var otherToggle = other.querySelector('.read-more-toggle');
+						if (otherWrap && otherToggle) {
+							otherWrap.style.display = 'none';
+							otherToggle.innerHTML = 'Read more <i class="fa fa-angle-down"></i>';
+						}
+					});
+					// Then open this one (unless it was already open)
+					if (!isOpen) {
+						wrap.style.display = 'block';
+						toggle.innerHTML = 'Read less <i class="fa fa-angle-up"></i>';
+					}
+				});
+			});
+		})();
+		</script>
 	</body>
 </html>

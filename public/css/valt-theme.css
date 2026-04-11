@@ -44,8 +44,6 @@ p { color: #555 !important; line-height: 1.8 !important; }
 .banner-area { background-image: url('../img/headerbg01.jpg') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; }
 .gallery-banner { background-image: url('../img/headerbg02.jpg') !important; background-position: center !important; }
 .contact-banner { background-image: url('../img/cta-bg.jpg') !important; background-position: center !important; }
-.main-menu { padding-top: 11px !important; padding-bottom: 11px !important; }
-#logo img { height: 82px !important; }
 
 /* --- FOOTER BOTTOM MOBILE ORDER --- */
 @media (max-width: 767px) {
@@ -181,7 +179,7 @@ p { color: #555 !important; line-height: 1.8 !important; }
 
 /* --- BANNER & OVERLAY --- */
 .banner-area .overlay-bg { background: linear-gradient(135deg, rgba(10,35,66,.8), rgba(10,35,66,.65)) !important; }
-.search-course-area .overlay-bg { background: linear-gradient(135deg, rgba(10,35,66,.85), rgba(10,35,66,.7)) !important; }
+.search-course-area .overlay-bg { background: linear-gradient(135deg, rgba(10,35,66,.6), rgba(10,35,66,.45)) !important; }
 .cta-one-area .overlay-bg { background: rgba(10,35,66,.20) !important; }
 .about-banner .overlay-bg, .about-content .overlay-bg { background: linear-gradient(135deg, rgba(10,35,66,.8), rgba(10,35,66,.65)) !important; }
 .generic-banner { background: linear-gradient(135deg, #2a9d8f, #1e7a6f) !important; }
@@ -240,8 +238,9 @@ p { color: #555 !important; line-height: 1.8 !important; }
 .single-carusel .detials h4:hover { color: #2a9d8f !important; }
 .search-course-area .search-course-right {
 	border-radius: 12px !important;
-	backdrop-filter: blur(10px) !important;
 }
+.search-course-area .search-course-right .form-wrap { overflow: visible !important; }
+.search-course-area .nice-select .list { max-height: 250px; overflow-y: auto; z-index: 9999 !important; }
 
 /* --- COURSE & EVENT DETAILS --- */
 .left-contents .jq-tab-menu .jq-tab-title:hover,
