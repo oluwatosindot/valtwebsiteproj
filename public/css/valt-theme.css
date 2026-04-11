@@ -240,7 +240,8 @@ p { color: #555 !important; line-height: 1.8 !important; }
 	border-radius: 12px !important;
 }
 .search-course-area .search-course-right .form-wrap { overflow: visible !important; }
-.search-course-area .nice-select .list { max-height: 250px; overflow-y: auto; z-index: 9999 !important; }
+.search-course-area .nice-select .list { max-height: 250px; overflow-y: auto; z-index: 9999 !important; display: none !important; }
+.search-course-area .nice-select.open .list { display: block !important; }
 
 /* --- COURSE & EVENT DETAILS --- */
 .left-contents .jq-tab-menu .jq-tab-title:hover,
