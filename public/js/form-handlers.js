@@ -24,7 +24,7 @@ $(document).ready(function () {
     $btn.text('Sending...');
 
     $.ajax({
-      url: '/api/enquiry',
+      url: 'enquiry.php',
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(data),
