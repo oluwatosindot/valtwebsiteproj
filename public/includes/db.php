@@ -16,3 +16,8 @@ try {
     error_log('DB error: ' . $e->getMessage());
     die(json_encode(['success' => false, 'message' => 'Database connection error. Please try again later.']));
 }
+
+function getDB() {
+    global $pdo;
+    return $pdo;
+}
