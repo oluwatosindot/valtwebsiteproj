@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $city       = trim(strip_tags($_POST['city']        ?? ''));
       $school     = trim(strip_tags($_POST['school_name'] ?? ''));
       $schoolOther= trim(strip_tags($_POST['school_other']?? ''));
-      $progInterest = trim(strip_tags($_POST['programme_interest'] ?? ''));
+      $progInterest = isset($_POST['programme_interest']) ? implode(', ', array_map('strip_tags', (array)$_POST['programme_interest'])) : '';
       $subjects   = isset($_POST['subjects']) ? implode(', ', array_map('strip_tags', (array)$_POST['subjects'])) : '';
       $howHeard   = trim(strip_tags($_POST['how_heard']   ?? ''));
 
@@ -436,20 +436,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p>Help us understand what excites you most.</p>
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-12">
                       <div class="reg-form-group">
-                        <label>Programme Interest</label>
-                        <div class="select-wrap">
-                          <select class="reg-select" name="programme_interest">
-                            <option value="">-- Select Programme --</option>
-                            <option value="VALT 101 - Financial Literacy">VALT 101 — Financial Literacy</option>
-                            <option value="VALT 102 - Entrepreneurship & Branding">VALT 102 — Entrepreneurship &amp; Branding</option>
-                            <option value="VALT 103 - Emotional Intelligence & Identity">VALT 103 — Emotional Intelligence &amp; Identity</option>
-                            <option value="VALT 104 - Career Guidance">VALT 104 — Career Guidance</option>
-                            <option value="VALT 105 - Health & Fitness">VALT 105 — Health &amp; Fitness</option>
-                            <option value="VALT 106 - Internship Programme">VALT 106 — Internship Programme</option>
-                            <option value="Not sure yet">Not sure yet</option>
-                          </select>
+                        <label>Programme Interest <small style="color:#aab;font-weight:400;">(select all that apply)</small></label>
+                        <div class="checkbox-group">
+                          <?php
+                          $programmes = [
+                            'VALT 101 - Financial Literacy',
+                            'VALT 102 - Entrepreneurship & Branding',
+                            'VALT 103 - Emotional Intelligence & Identity',
+                            'VALT 104 - Career Guidance',
+                            'VALT 105 - Health & Fitness',
+                            'VALT 106 - Internship Programme',
+                            'Not sure yet',
+                          ];
+                          $selectedProgs = isset($_POST['programme_interest']) ? (array)$_POST['programme_interest'] : [];
+                          foreach ($programmes as $prog):
+                          ?>
+                          <label class="checkbox-item">
+                            <input type="checkbox" name="programme_interest[]" value="<?php echo htmlspecialchars($prog); ?>" <?php echo in_array($prog, $selectedProgs) ? 'checked' : ''; ?>>
+                            <?php echo htmlspecialchars($prog); ?>
+                          </label>
+                          <?php endforeach; ?>
                         </div>
                       </div>
                     </div>
@@ -545,7 +553,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </footer>
 
-  <a href="https://wa.me/27614610828" class="float-whatsapp" target="_blank" aria-label="WhatsApp"><i class="fa fa-whatsapp"></i></a>
+  <div class="float-contact">
+    <a href="https://wa.me/27614610828" class="float-whatsapp" target="_blank" aria-label="WhatsApp"><i class="fa fa-whatsapp"></i></a>
+    <a href="mailto:info@valt.co.za" class="float-email" aria-label="Email"><i class="fa fa-envelope"></i></a>
+  </div>
 
   <script src="js/vendor/jquery-2.2.4.min.js"></script>
   <script src="js/vendor/bootstrap.min.js"></script>
