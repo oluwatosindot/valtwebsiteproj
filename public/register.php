@@ -202,11 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <div class="success-icon"><i class="fa fa-check"></i></div>
               <h2>Registration Successful!</h2>
               <p>Welcome to VALT Academy! Your details have been received. Check your email for a confirmation message.</p>
-              <div class="student-id-box">
-                <div class="label">Your Student ID</div>
-                <div class="sid"><?php echo htmlspecialchars($studentId); ?></div>
-              </div>
-              <p style="font-size:14px;color:#aab;margin-top:16px;">Keep this ID safe — you'll need it when we launch the full learning platform.</p>
               <a href="courses.html" class="btn-reg-next" style="margin-top:24px;display:inline-block;text-decoration:none;">Explore Programmes &rarr;</a>
             </div>
           </div>
