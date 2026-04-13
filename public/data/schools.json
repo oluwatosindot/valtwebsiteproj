@@ -1,0 +1,88 @@
+{
+  "Gauteng": [
+    "Afrikaans Hoër Seunskool (Affies)", "Bryanston High School", "Benoni High School",
+    "Boksburg High School", "Cornwall Hill College", "Crawford College Lonehill",
+    "Crawford College Sandton", "Curro Hillcrest", "Curro Rivonia", "Dainfern College",
+    "Edenvale High School", "Florida High School", "Fourways High School",
+    "Germiston High School", "Greenside High School", "Hoërskool Menlopark",
+    "Hoërskool Waterkloof", "Hyde Park High School", "Johannesburg High School",
+    "King Edward VII School (KES)", "Northcliff High School", "Parktown Boys' High School",
+    "Parktown Girls' High School", "Pretoria Boys' High School",
+    "Pretoria High School for Girls", "Randburg High School", "Roedean School Johannesburg",
+    "Sacred Heart College", "St John's College", "St Mary's School Waverley",
+    "St Stithians College", "Trinityhouse High School", "Wits High School",
+    "Central Johannesburg TVET College", "Ekurhuleni East TVET College",
+    "Ekurhuleni West TVET College", "Sedibeng TVET College",
+    "South West Gauteng TVET College", "Tshwane North TVET College",
+    "Tshwane South TVET College"
+  ],
+  "KwaZulu-Natal": [
+    "Berea College", "Clarendon Girls' High School", "Clifton School",
+    "Crawford College Durban North", "Crawford College La Lucia",
+    "Danville Park Girls' High School", "Durban Girls' High School",
+    "Durban High School (DHS)", "Epworth School", "Glenwood High School",
+    "Hilton College", "Howick High School", "Kearsney College",
+    "Manor Gardens High School", "Maritzburg College", "Michaelhouse",
+    "Northlands Girls' High School", "Northway High School",
+    "Pinetown Boys' High School", "Settlers High School",
+    "St Henry's Marist Brothers College", "Thomas More College",
+    "Westville Boys' High School", "Westville Girls' High School",
+    "Coastal KZN TVET College", "Elangeni TVET College", "Esayidi TVET College",
+    "Majuba TVET College", "Mnambithi TVET College", "Thekwini TVET College",
+    "Umgungundlovu TVET College", "Umfolozi TVET College"
+  ],
+  "Western Cape": [
+    "Bellville High School", "Belhar High School", "Camps Bay High School",
+    "Crawford College Durbanville", "Diocesan College (Bishops)",
+    "Fairbairn College", "Groote Schuur High School", "Harold Cressy High School",
+    "Hermanus High School", "Herzlia High School", "Herschel Girls' School",
+    "Milnerton High School", "Paarl Boys' High School", "Paarl Girls' High School",
+    "Paul Roos Gymnasium", "Reddam House Atlantic Seaboard",
+    "Rondebosch Boys' High School", "Rustenburg Girls' High School",
+    "Somerset College", "South African College Schools (SACS)",
+    "Springfield Convent School", "Stellenberg High School",
+    "Stellenbosch High School", "Wynberg Boys' High School",
+    "Wynberg Girls' High School", "False Bay TVET College",
+    "Northlink TVET College", "South Cape TVET College", "West Coast TVET College"
+  ],
+  "Eastern Cape": [
+    "Berea College East London", "Collegiate Girls' High School",
+    "Daniel Pienaar Technical High School", "Graeme College",
+    "Grey High School Port Elizabeth", "Hudson Park High School",
+    "King William's Town High School", "Pearson High School",
+    "St Andrew's College Grahamstown", "Victoria Girls' High School",
+    "Westering High School", "Buffalo City TVET College",
+    "East Cape Midlands TVET College", "Lovedale TVET College",
+    "Port Elizabeth TVET College", "King Hintsa TVET College"
+  ],
+  "Free State": [
+    "Eunice High School", "Fichardtpark High School", "Grey College Bloemfontein",
+    "Hoërskool Sentraal Bloemfontein", "Oranje Meisieskool",
+    "Sand du Plessis Technical High School", "St Andrew's School for Girls",
+    "Flavius Mareka TVET College", "Goldfields TVET College",
+    "Maluti TVET College", "Motheo TVET College"
+  ],
+  "Limpopo": [
+    "Ben Vorster High School", "Hoërskool Piet Potgieter",
+    "Louis Trichardt High School", "Merensky High School",
+    "Pietersburg High School", "Seshego High School", "Tzaneen High School",
+    "Capricorn TVET College", "Mopani South East TVET College",
+    "Vhembe TVET College", "Waterberg TVET College"
+  ],
+  "Mpumalanga": [
+    "Barberton High School", "Hoërskool Ermelo", "Middelburg High School",
+    "Nelspruit High School", "Uplands College",
+    "Witbank High School (eMalahleni)", "Ehlanzeni TVET College",
+    "Gert Sibande TVET College", "Nkangala TVET College"
+  ],
+  "North West": [
+    "Hoërskool Lebone II", "Klerksdorp High School", "Lichtenburg High School",
+    "Potchefstroom Gymnasium", "Rustenburg High School",
+    "Orbit TVET College", "Taletso TVET College", "Vuselela TVET College"
+  ],
+  "Northern Cape": [
+    "Kimberley Boys' High School", "Kimberley Girls' High School",
+    "Langenhoven High School", "Sol Plaatje High School",
+    "Northern Cape Rural TVET College", "Northern Cape Urban TVET College"
+  ]
+}
