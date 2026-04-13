@@ -6,9 +6,9 @@
 
 // Database
 define('DB_HOST', 'localhost');
-define('DB_NAME',  '');        // e.g. valtco_students
-define('DB_USER',  '');        // cPanel MySQL username
-define('DB_PASS',  '');        // cPanel MySQL password
+define('DB_NAME',  'valt_academy');  // change if you named it differently
+define('DB_USER',  'root');          // XAMPP default
+define('DB_PASS',  '');              // XAMPP default (no password)
 
 // Site
 define('SITE_URL',   'https://valt.co.za');
