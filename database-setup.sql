@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS `valt_students` (
   `whatsapp_number`         VARCHAR(20)  NOT NULL,
   `other_number`            VARCHAR(20)  DEFAULT NULL,
   `parent_guardian_number`  VARCHAR(20)  NOT NULL,
+  `parent_guardian_name`    VARCHAR(100) NOT NULL,
+  `parent_guardian_email`   VARCHAR(255) NOT NULL,
   `email`                   VARCHAR(255) NOT NULL UNIQUE,
   `grade`                   TINYINT      NOT NULL,
   `province`                VARCHAR(100) NOT NULL,
@@ -27,3 +29,8 @@ CREATE TABLE IF NOT EXISTS `valt_students` (
   INDEX `idx_province`  (`province`),
   INDEX `idx_registered`(`registered_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Run this if the table already exists and you need to add the new columns:
+-- ALTER TABLE `valt_students`
+--   ADD COLUMN `parent_guardian_name`  VARCHAR(100) NOT NULL DEFAULT '' AFTER `parent_guardian_number`,
+--   ADD COLUMN `parent_guardian_email` VARCHAR(255) NOT NULL DEFAULT '' AFTER `parent_guardian_name`;

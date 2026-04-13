@@ -32,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $whatsapp   = preg_replace('/[^0-9+\s\-]/', '', $_POST['whatsapp_number']        ?? '');
       $otherNum   = preg_replace('/[^0-9+\s\-]/', '', $_POST['other_number']            ?? '');
       $parentNum  = preg_replace('/[^0-9+\s\-]/', '', $_POST['parent_guardian_number'] ?? '');
+      $parentName = trim(strip_tags($_POST['parent_guardian_name']  ?? ''));
+      $parentEmail= filter_var(trim($_POST['parent_guardian_email'] ?? ''), FILTER_SANITIZE_EMAIL);
       $email      = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
       $grade      = intval($_POST['grade']    ?? 0);
       $province   = trim(strip_tags($_POST['province']    ?? ''));
@@ -59,8 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Please enter a valid WhatsApp number.';
       if (strlen(preg_replace('/\D/', '', $parentNum)) < 10)
         $errors[] = 'Please enter a valid parent/guardian number.';
+      if (!preg_match('/^[a-zA-Z\s\'\-]{2,80}$/', $parentName))
+        $errors[] = 'Please enter a valid parent/guardian name.';
+      if (!filter_var($parentEmail, FILTER_VALIDATE_EMAIL))
+        $errors[] = 'Please enter a valid parent/guardian email address.';
       if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-        $errors[] = 'Please enter a valid email address.';
+        $errors[] = 'Please enter a valid student email address.';
       if (!in_array($grade, [8,9,10,11]))
         $errors[] = 'Please select a valid grade (8–11).';
       if (empty($province)) $errors[] = 'Please select your province.';
@@ -88,14 +94,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $stmt = $pdo->prepare('
             INSERT INTO valt_students
               (student_id, first_name, last_name, date_of_birth, gender,
-               whatsapp_number, other_number, parent_guardian_number, email,
+               whatsapp_number, other_number, parent_guardian_number,
+               parent_guardian_name, parent_guardian_email, email,
                grade, province, city, school_name, school_other,
                programme_interest, subjects_interest, how_heard)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           ');
           $stmt->execute([
             $studentId, $firstName, $lastName, $dob, $gender,
-            $whatsapp, $otherNum ?: null, $parentNum, $email,
+            $whatsapp, $otherNum ?: null, $parentNum,
+            $parentName, $parentEmail, $email,
             $grade, $province, $city, $finalSchool,
             ($school === 'Other' ? $schoolOther : null),
             $progInterest ?: null, $subjects ?: null, $howHeard ?: null
@@ -301,29 +309,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <div class="row">
                     <div class="col-md-6">
                       <div class="reg-form-group">
-                        <label>WhatsApp Number <span class="required">*</span></label>
+                        <label>Student's WhatsApp Number <span class="required">*</span></label>
                         <input class="reg-input" type="tel" name="whatsapp_number" required placeholder="e.g. 071 234 5678" value="<?php echo htmlspecialchars($_POST['whatsapp_number'] ?? ''); ?>">
                         <div class="field-error"></div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="reg-form-group">
-                        <label>Other Number <small style="color:#aab;font-weight:400;">(optional)</small></label>
+                        <label>Student's Other Number <small style="color:#aab;font-weight:400;">(optional)</small></label>
                         <input class="reg-input" type="tel" name="other_number" placeholder="e.g. 031 555 0000" value="<?php echo htmlspecialchars($_POST['other_number'] ?? ''); ?>">
                         <div class="field-error"></div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="reg-form-group">
-                        <label>Parent / Guardian Number <span class="required">*</span></label>
+                        <label>Student's Email Address <span class="required">*</span></label>
+                        <input class="reg-input" type="email" name="email" required placeholder="e.g. thabo@email.com" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                        <div class="field-error"></div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="reg-form-group">
+                        <label>Parent / Guardian Full Name <span class="required">*</span></label>
+                        <input class="reg-input" type="text" name="parent_guardian_name" required placeholder="e.g. Sarah Mokoena" value="<?php echo htmlspecialchars($_POST['parent_guardian_name'] ?? ''); ?>">
+                        <div class="field-error"></div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="reg-form-group">
+                        <label>Parent / Guardian Phone Number <span class="required">*</span></label>
                         <input class="reg-input" type="tel" name="parent_guardian_number" required placeholder="e.g. 082 456 7890" value="<?php echo htmlspecialchars($_POST['parent_guardian_number'] ?? ''); ?>">
                         <div class="field-error"></div>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="reg-form-group">
-                        <label>Email Address <span class="required">*</span></label>
-                        <input class="reg-input" type="email" name="email" required placeholder="e.g. thabo@email.com" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+                        <label>Parent / Guardian Email Address <span class="required">*</span></label>
+                        <input class="reg-input" type="email" name="parent_guardian_email" required placeholder="e.g. sarah@email.com" value="<?php echo htmlspecialchars($_POST['parent_guardian_email'] ?? ''); ?>">
                         <div class="field-error"></div>
                       </div>
                     </div>

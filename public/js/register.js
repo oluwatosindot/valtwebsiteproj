@@ -76,6 +76,16 @@
         if (!val) error = 'Please select your gender.';
         break;
 
+      case 'parent_guardian_name':
+        if (!val) error = 'Please enter the parent/guardian name.';
+        else if (!/^[a-zA-Z\s'\-]{2,80}$/.test(val)) error = 'Letters only, 2–80 characters.';
+        break;
+
+      case 'parent_guardian_email':
+        if (!val) error = 'Parent/guardian email is required.';
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)) error = 'Enter a valid email address.';
+        break;
+
       case 'whatsapp_number':
       case 'parent_guardian_number':
         if (!val) error = 'This field is required.';
