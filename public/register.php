@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li><a href="courses.html">Programmes</a></li>
             <li><a href="gallery.html">Gallery</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="register.php" class="nav-register-btn">Register</a></li>
+            <li><a href="register.php" class="nav-register-btn" target="_blank">Register</a></li>
           </ul>
         </nav>
       </div>
