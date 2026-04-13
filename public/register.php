@@ -154,35 +154,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
   <!-- Header -->
-  <header class="default-header">
-    <div class="container">
-      <div class="header-wrap">
-        <div class="header-top d-flex justify-content-between align-items-center">
-          <div class="logo">
-            <a href="index.html"><img src="img/logo02.png" alt="VALT Academy" style="max-height:40px;"></a>
-          </div>
-          <nav id="nav-menu-container">
-            <ul class="nav-menu">
-              <li><a href="index.html">Home</a></li>
-              <li><a href="about.html">About</a></li>
-              <li><a href="courses.html">Programmes</a></li>
-              <li><a href="gallery.html">Gallery</a></li>
-              <li><a href="contact.html">Contact</a></li>
-              <li><a href="register.php" class="nav-register-btn">Register</a></li>
-            </ul>
-          </nav>
+  <header id="header">
+    <div class="container main-menu">
+      <div class="row align-items-center justify-content-between d-flex">
+        <div id="logo">
+          <a href="index.html"><img src="img/logo02.png" alt="VALT Academy" style="height:65px;"></a>
         </div>
+        <div class="mobile-tagline">Educational enrichment provider</div>
+        <nav id="nav-menu-container">
+          <ul class="nav-menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="courses.html">Programmes</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="register.php" class="nav-register-btn">Register</a></li>
+          </ul>
+        </nav>
       </div>
     </div>
   </header>
 
   <!-- Breadcrumb -->
-  <section class="banner-area relative" style="background:#0a2342;padding:60px 0 40px;">
-    <div class="container">
+  <section class="banner-area relative" style="position:relative;padding:100px 0 60px;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:url('img/headerbg01.jpg');background-size:cover;background-position:center;filter:blur(3px);transform:scale(1.05);"></div>
+    <div style="position:absolute;inset:0;background:rgba(10,35,66,0.72);"></div>
+    <div class="container" style="position:relative;z-index:1;">
       <div class="row d-flex align-items-center justify-content-center">
         <div class="col-lg-8 text-center">
-          <h2 class="text-white" style="font-size:32px;font-weight:700;margin-bottom:10px;">Student Registration</h2>
-          <p class="text-white" style="opacity:0.75;font-size:15px;">Join the VALT community — fill in your details below to get started.</p>
+          <h2 class="text-white" style="font-size:34px;font-weight:700;margin-bottom:10px;">Student Registration</h2>
+          <p class="text-white" style="opacity:0.85;font-size:15px;">Join the VALT community — fill in your details below to get started.</p>
         </div>
       </div>
     </div>
