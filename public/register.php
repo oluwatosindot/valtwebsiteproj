@@ -438,8 +438,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                           <?php
                           $programmes = [
                             'VALT 101 - Financial Literacy',
-                            'VALT 102 - Entrepreneurship & Branding',
-                            'VALT 103 - Emotional Intelligence & Identity',
+                            'VALT 102 - Entrepreneurship',
+                            'VALT 103 - Emotional Intelligence',
                             'VALT 104 - Career Guidance',
                             'VALT 105 - Health & Fitness',
                             'VALT 106 - Internship Programme',
@@ -522,8 +522,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h4>Our Programmes</h4>
             <ul>
               <li><a href="courses.html">VALT 101 - Financial Literacy</a></li>
-              <li><a href="courses.html">VALT 102 - Entrepreneurship &amp; Branding</a></li>
-              <li><a href="courses.html">VALT 103 - Emotional Intelligence &amp; Identity</a></li>
+              <li><a href="courses.html">VALT 102 - Entrepreneurship</a></li>
+              <li><a href="courses.html">VALT 103 - Emotional Intelligence</a></li>
               <li><a href="courses.html">VALT 104 - Career Guidance</a></li>
               <li><a href="courses.html">VALT 105 - Health &amp; Fitness</a></li>
               <li><a href="courses.html">VALT 106 - Internship Programme</a></li>
@@ -535,7 +535,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h4>Contact Us</h4>
             <ul>
               <li><a href="https://wa.me/27614610828"><i class="fa fa-whatsapp"></i> 061 461 0828 (WhatsApp)</a></li>
-              <li><a href="tel:+27763906975"><i class="fa fa-phone"></i> 076 390 6975 (Calls)</a></li>
               <li><a href="mailto:info@valt.co.za"><i class="fa fa-envelope"></i> info@valt.co.za</a></li>
               <li><i class="fa fa-map-marker"></i> Durban, KZN, South Africa</li>
             </ul>

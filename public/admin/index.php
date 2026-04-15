@@ -76,10 +76,12 @@ $params  = [];
 
 $filterGrade    = $_GET['grade']    ?? '';
 $filterProvince = $_GET['province'] ?? '';
+$filterModule   = $_GET['module']   ?? '';
 $filterSearch   = trim($_GET['q']   ?? '');
 
-if ($filterGrade    !== '') { $where[] = 'grade = ?';           $params[] = (int)$filterGrade; }
-if ($filterProvince !== '') { $where[] = 'province = ?';        $params[] = $filterProvince; }
+if ($filterGrade    !== '') { $where[] = 'grade = ?';                $params[] = (int)$filterGrade; }
+if ($filterProvince !== '') { $where[] = 'province = ?';             $params[] = $filterProvince; }
+if ($filterModule   !== '') { $where[] = 'programme_interest = ?';   $params[] = $filterModule; }
 if ($filterSearch   !== '') {
     $where[] = '(first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR student_id LIKE ?)';
     $like = '%' . $filterSearch . '%';
@@ -127,6 +129,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
 $total       = $pdo->query("SELECT COUNT(*) FROM valt_students")->fetchColumn();
 $todayCount  = $pdo->query("SELECT COUNT(*) FROM valt_students WHERE DATE(registered_at) = CURDATE()")->fetchColumn();
 $provinces   = $pdo->query("SELECT DISTINCT province FROM valt_students ORDER BY province")->fetchAll(PDO::FETCH_COLUMN);
+$modules     = $pdo->query("SELECT DISTINCT programme_interest FROM valt_students WHERE programme_interest IS NOT NULL AND programme_interest != '' ORDER BY programme_interest")->fetchAll(PDO::FETCH_COLUMN);
 
 // ── Fetch students ────────────────────────────────────────────────────────────
 $stmt = $pdo->prepare("SELECT * FROM valt_students $whereSql $orderBy");
@@ -136,6 +139,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $currentUrl = 'index.php?' . http_build_query(array_filter([
     'grade'    => $filterGrade,
     'province' => $filterProvince,
+    'module'   => $filterModule,
     'q'        => $filterSearch,
 ]));
 ?>
@@ -203,6 +207,31 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
   .empty{text-align:center;padding:48px;color:#7a8ba0}
   .count-info{font-size:13px;color:#7a8ba0;margin-bottom:10px}
 
+  /* Sortable headers */
+  thead th.sortable{cursor:pointer;user-select:none}
+  thead th.sortable:hover{background:#0d2e55}
+  thead th .sort-icon{display:inline-block;margin-left:5px;opacity:.5;font-size:10px}
+  thead th.sort-asc .sort-icon::after{content:'▲';opacity:1}
+  thead th.sort-desc .sort-icon::after{content:'▼';opacity:1}
+  thead th:not(.sort-asc):not(.sort-desc) .sort-icon::after{content:'⇅'}
+
+  /* View button */
+  .btn-view{padding:4px 10px;background:#2a9d8f;color:#fff;border:none;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer}
+  .btn-view:hover{background:#21867a}
+
+  /* Modal */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal-card{background:#fff;border-radius:14px;width:100%;max-width:560px;box-shadow:0 24px 64px rgba(0,0,0,.3);overflow:hidden}
+  .modal-header{background:#0a2342;color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+  .modal-header h2{font-size:16px;font-weight:700}
+  .modal-header .modal-sid{font-size:11px;color:#2a9d8f;margin-top:3px}
+  .modal-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;line-height:1}
+  .modal-body{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+  .modal-field label{font-size:11px;font-weight:600;color:#7a8ba0;text-transform:uppercase;letter-spacing:.5px}
+  .modal-field p{font-size:14px;color:#2c3e50;margin-top:3px;word-break:break-word}
+  .modal-field.full{grid-column:1/-1}
+
   @media print{
     .sidebar,.toolbar,.exports{display:none!important}
     .main{margin-left:0!important;padding:0!important}
@@ -265,6 +294,12 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
           <option value="<?= htmlspecialchars($prov) ?>" <?= $filterProvince === $prov ? 'selected' : '' ?>><?= htmlspecialchars($prov) ?></option>
         <?php endforeach; ?>
       </select>
+      <select name="module">
+        <option value="">All Modules</option>
+        <?php foreach ($modules as $mod): ?>
+          <option value="<?= htmlspecialchars($mod) ?>" <?= $filterModule === $mod ? 'selected' : '' ?>><?= htmlspecialchars($mod) ?></option>
+        <?php endforeach; ?>
+      </select>
       <button type="submit" class="btn-filter">Filter</button>
       <a href="index.php" class="btn-clear">Clear</a>
     </form>
@@ -282,31 +317,48 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
     <table>
       <thead>
         <tr>
-          <th>Student ID</th>
-          <th>Name</th>
-          <th>Grade</th>
-          <th>Province</th>
-          <th>City</th>
-          <th>School</th>
-          <th>WhatsApp</th>
-          <th>Email</th>
-          <th>Programme</th>
-          <th>Registered</th>
+          <th class="sortable" data-col="0">Student ID<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="1">Name<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="2">Grade<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="3">Province<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="4">City<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="5">School<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="6">WhatsApp<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="7">Email<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="8">Module<span class="sort-icon"></span></th>
+          <th class="sortable" data-col="9">Registered<span class="sort-icon"></span></th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($students as $s): ?>
+        <?php
+          $school = $s['school_name'] === 'Other' ? ($s['school_other'] ?: 'Other') : $s['school_name'];
+          $modalData = json_encode([
+            'student_id'   => $s['student_id'],
+            'name'         => $s['first_name'] . ' ' . $s['last_name'],
+            'grade'        => $s['grade'],
+            'province'     => $s['province'],
+            'city'         => $s['city'],
+            'school'       => $school,
+            'whatsapp'     => $s['whatsapp_number'],
+            'email'        => $s['email'],
+            'module'       => $s['programme_interest'] ?: '—',
+            'registered'   => date('d M Y, H:i', strtotime($s['registered_at'])),
+          ]);
+        ?>
         <tr>
           <td><strong><?= htmlspecialchars($s['student_id']) ?></strong></td>
           <td><?= htmlspecialchars($s['first_name'] . ' ' . $s['last_name']) ?></td>
           <td><span class="badge badge-grade">Gr <?= (int)$s['grade'] ?></span></td>
           <td><?= htmlspecialchars($s['province']) ?></td>
           <td><?= htmlspecialchars($s['city']) ?></td>
-          <td><?= htmlspecialchars($s['school_name'] === 'Other' ? ($s['school_other'] ?: 'Other') : $s['school_name']) ?></td>
+          <td><?= htmlspecialchars($school) ?></td>
           <td><?= htmlspecialchars($s['whatsapp_number']) ?></td>
           <td><?= htmlspecialchars($s['email']) ?></td>
           <td><?= htmlspecialchars($s['programme_interest'] ?: '—') ?></td>
           <td><?= date('d M Y', strtotime($s['registered_at'])) ?></td>
+          <td><button class="btn-view" onclick="openModal(<?= htmlspecialchars($modalData, ENT_QUOTES) ?>)">View</button></td>
         </tr>
         <?php endforeach; ?>
       </tbody>
@@ -317,5 +369,82 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
   </div>
 
 </div>
+
+<!-- Student Detail Modal -->
+<div class="modal-overlay" id="studentModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <h2 id="modal-name"></h2>
+        <div class="modal-sid" id="modal-sid"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-field"><label>Grade</label><p id="modal-grade"></p></div>
+      <div class="modal-field"><label>Province</label><p id="modal-province"></p></div>
+      <div class="modal-field"><label>City</label><p id="modal-city"></p></div>
+      <div class="modal-field"><label>School</label><p id="modal-school"></p></div>
+      <div class="modal-field"><label>WhatsApp</label><p id="modal-whatsapp"></p></div>
+      <div class="modal-field"><label>Email</label><p id="modal-email"></p></div>
+      <div class="modal-field full"><label>Module</label><p id="modal-module"></p></div>
+      <div class="modal-field full"><label>Registered</label><p id="modal-registered"></p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Student Modal ──────────────────────────────────────────────────────────────
+function openModal(data) {
+  document.getElementById('modal-name').textContent       = data.name;
+  document.getElementById('modal-sid').textContent        = 'ID: ' + data.student_id;
+  document.getElementById('modal-grade').textContent      = 'Grade ' + data.grade;
+  document.getElementById('modal-province').textContent   = data.province;
+  document.getElementById('modal-city').textContent       = data.city;
+  document.getElementById('modal-school').textContent     = data.school;
+  document.getElementById('modal-whatsapp').textContent   = data.whatsapp;
+  document.getElementById('modal-email').textContent      = data.email;
+  document.getElementById('modal-module').textContent     = data.module;
+  document.getElementById('modal-registered').textContent = data.registered;
+  document.getElementById('studentModal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('studentModal').classList.remove('open');
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+
+// ── Sortable columns ───────────────────────────────────────────────────────────
+(function(){
+  var table = document.querySelector('table');
+  if (!table) return;
+  var tbody = table.querySelector('tbody');
+  var headers = table.querySelectorAll('thead th.sortable');
+  var sortCol = -1, sortAsc = true;
+
+  headers.forEach(function(th) {
+    th.addEventListener('click', function(){
+      var col = parseInt(th.dataset.col);
+      if (sortCol === col) { sortAsc = !sortAsc; }
+      else { sortCol = col; sortAsc = true; }
+
+      headers.forEach(function(h){ h.classList.remove('sort-asc','sort-desc'); });
+      th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+
+      var rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort(function(a, b){
+        var av = (a.cells[col] ? a.cells[col].textContent.trim() : '');
+        var bv = (b.cells[col] ? b.cells[col].textContent.trim() : '');
+        if (col === 2) {
+          av = parseInt(av.replace(/\D/g,'')) || 0;
+          bv = parseInt(bv.replace(/\D/g,'')) || 0;
+          return sortAsc ? av - bv : bv - av;
+        }
+        return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+      });
+      rows.forEach(function(r){ tbody.appendChild(r); });
+    });
+  });
+})();
+</script>
 </body>
 </html>
