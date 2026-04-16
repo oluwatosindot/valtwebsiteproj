@@ -4,6 +4,9 @@ node_modules/
 # Environment
 .env
 
+# Production config (credentials differ per environment)
+public/includes/config.php
+
 # OS files
 .DS_Store
 Thumbs.db
