@@ -219,6 +219,23 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
   .btn-view{padding:4px 10px;background:#2a9d8f;color:#fff;border:none;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer}
   .btn-view:hover{background:#21867a}
 
+  /* Module button */
+  .btn-module{padding:4px 10px;background:#6c3fc5;color:#fff;border:none;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .btn-module:hover{background:#5a33a8}
+
+  /* Module Modal */
+  .module-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100;align-items:center;justify-content:center}
+  .module-overlay.open{display:flex}
+  .module-card{background:#fff;border-radius:14px;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,.3);overflow:hidden}
+  .module-header{background:#6c3fc5;color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+  .module-header h2{font-size:15px;font-weight:700}
+  .module-header .module-student-name{font-size:11px;color:rgba(255,255,255,.7);margin-top:3px}
+  .module-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;line-height:1}
+  .module-body{padding:28px 24px;text-align:center}
+  .module-body .module-icon{font-size:40px;margin-bottom:12px}
+  .module-body .module-name{font-size:18px;font-weight:700;color:#0a2342}
+  .module-body .module-label{font-size:12px;color:#7a8ba0;text-transform:uppercase;letter-spacing:.5px;margin-top:6px}
+
   /* Modal */
   .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
   .modal-overlay.open{display:flex}
@@ -325,8 +342,8 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
           <th class="sortable" data-col="5">School<span class="sort-icon"></span></th>
           <th class="sortable" data-col="6">WhatsApp<span class="sort-icon"></span></th>
           <th class="sortable" data-col="7">Email<span class="sort-icon"></span></th>
-          <th class="sortable" data-col="8">Module<span class="sort-icon"></span></th>
-          <th class="sortable" data-col="9">Registered<span class="sort-icon"></span></th>
+          <th>Module</th>
+          <th class="sortable" data-col="8">Registered<span class="sort-icon"></span></th>
           <th>Action</th>
         </tr>
       </thead>
@@ -356,7 +373,11 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
           <td><?= htmlspecialchars($school) ?></td>
           <td><?= htmlspecialchars($s['whatsapp_number']) ?></td>
           <td><?= htmlspecialchars($s['email']) ?></td>
-          <td><?= htmlspecialchars($s['programme_interest'] ?: '—') ?></td>
+          <td>
+            <?php if ($s['programme_interest']): ?>
+              <button class="btn-module" onclick="openModuleModal(<?= htmlspecialchars(json_encode(['name'=>$s['first_name'].' '.$s['last_name'],'module'=>$s['programme_interest']]), ENT_QUOTES) ?>)">&#128218; View</button>
+            <?php else: ?>—<?php endif; ?>
+          </td>
           <td><?= date('d M Y', strtotime($s['registered_at'])) ?></td>
           <td><button class="btn-view" onclick="openModal(<?= htmlspecialchars($modalData, ENT_QUOTES) ?>)">View</button></td>
         </tr>
@@ -368,6 +389,24 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
     <?php endif; ?>
   </div>
 
+</div>
+
+<!-- Module Modal -->
+<div class="module-overlay" id="moduleModal" onclick="if(event.target===this)closeModuleModal()">
+  <div class="module-card">
+    <div class="module-header">
+      <div>
+        <h2>Enrolled Module</h2>
+        <div class="module-student-name" id="mm-student-name"></div>
+      </div>
+      <button class="module-close" onclick="closeModuleModal()">&#x2715;</button>
+    </div>
+    <div class="module-body">
+      <div class="module-icon">&#127979;</div>
+      <div class="module-name" id="mm-module-name"></div>
+      <div class="module-label">Programme Interest</div>
+    </div>
+  </div>
 </div>
 
 <!-- Student Detail Modal -->
@@ -411,7 +450,17 @@ function openModal(data) {
 function closeModal() {
   document.getElementById('studentModal').classList.remove('open');
 }
-document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeModal(); closeModuleModal(); } });
+
+// ── Module Modal ───────────────────────────────────────────────────────────────
+function openModuleModal(data) {
+  document.getElementById('mm-student-name').textContent = data.name;
+  document.getElementById('mm-module-name').textContent  = data.module;
+  document.getElementById('moduleModal').classList.add('open');
+}
+function closeModuleModal() {
+  document.getElementById('moduleModal').classList.remove('open');
+}
 
 // ── Sortable columns ───────────────────────────────────────────────────────────
 (function(){
