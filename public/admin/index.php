@@ -106,25 +106,23 @@ $total      = $pdo->query("SELECT COUNT(*) FROM valt_students")->fetchColumn();
 $todayCount = $pdo->query("SELECT COUNT(*) FROM valt_students WHERE DATE(registered_at)=CURDATE()")->fetchColumn();
 $provinces  = $pdo->query("SELECT DISTINCT province FROM valt_students ORDER BY province")->fetchAll(PDO::FETCH_COLUMN);
 
-// Parse individual modules from comma-separated values
-$allModRows = $pdo->query("SELECT programme_interest FROM valt_students WHERE programme_interest IS NOT NULL AND programme_interest != ''")->fetchAll(PDO::FETCH_COLUMN);
-$moduleSet  = [];
-foreach ($allModRows as $row) {
-    foreach (array_map('trim', explode(',', $row)) as $m) {
-        if ($m !== '') $moduleSet[$m] = true;
-    }
-}
-$modules = array_keys($moduleSet);
-sort($modules);
+// Official module list
+$modules = [
+    'VALT 101 - Financial Literacy',
+    'VALT 102 - Entrepreneurship',
+    'VALT 103 - Emotional Intelligence',
+    'VALT 104 - Career Guidance',
+    'VALT 105 - Health & Fitness',
+    'VALT 106 - Internship Programme',
+];
 
-// Module counts
+// Count students per official module
 $modCounts = [];
-foreach ($allModRows as $row) {
-    foreach (array_map('trim', explode(',', $row)) as $m) {
-        if ($m !== '') $modCounts[$m] = ($modCounts[$m] ?? 0) + 1;
-    }
+foreach ($modules as $mod) {
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM valt_students WHERE programme_interest LIKE ?");
+    $stmt->execute(['%' . $mod . '%']);
+    $modCounts[$mod] = (int)$stmt->fetchColumn();
 }
-arsort($modCounts);
 
 // ── Dashboard data ────────────────────────────────────────────────────────────
 $regByDay = $byGrade = $byProvince = [];
@@ -135,10 +133,11 @@ if ($page === 'dashboard') {
 }
 
 // ── Modules page data ─────────────────────────────────────────────────────────
-$selectedMod = $modStudents = [];
+$selectedMod = '';
+$modStudents = [];
 if ($page === 'modules') {
     $selectedMod = $_GET['mod'] ?? '';
-    if ($selectedMod) {
+    if ($selectedMod && in_array($selectedMod, $modules)) {
         $stmt = $pdo->prepare("SELECT * FROM valt_students WHERE programme_interest LIKE ? ORDER BY first_name, last_name");
         $stmt->execute(['%' . $selectedMod . '%']);
         $modStudents = $stmt->fetchAll(PDO::FETCH_ASSOC);
