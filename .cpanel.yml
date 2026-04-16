@@ -2,5 +2,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/valtco/public_html/
-    - /bin/cp -R . $DEPLOYPATH
-    - cd $DEPLOYPATH && npm install --production
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R db $DEPLOYPATH
