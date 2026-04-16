@@ -1,11 +1,9 @@
 <?php
-session_start();
+if (($_GET['token'] ?? '') !== 'valt-diag-2026') {
+    die('Missing token.');
+}
 require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/db.php';
-
-if (!isset($_SESSION['valt_admin'])) {
-    die('Not authorised. Log into admin first.');
-}
 
 $pdo = getDB();
 echo '<style>body{font-family:monospace;padding:24px;background:#f5f5f5} table{border-collapse:collapse;width:100%} td,th{border:1px solid #ccc;padding:6px 10px;text-align:left} th{background:#0a2342;color:#fff} .ok{color:green;font-weight:bold} .fail{color:red;font-weight:bold} h2{margin:20px 0 10px}</style>';
