@@ -196,7 +196,7 @@ $currentUrl = 'index.php?' . http_build_query(array_filter([
   .btn-print:hover{background:#636e72}
 
   /* Table */
-  .table-wrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden}
+  .table-wrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto}
   table{width:100%;border-collapse:collapse}
   thead th{background:#0a2342;color:#fff;padding:12px 14px;text-align:left;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
   tbody tr:nth-child(even){background:#f8fafc}
