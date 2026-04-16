@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
 
       if (empty($errors)) {
-        // Generate student ID
-        $year  = date('Y');
-        $count = $pdo->query('SELECT COUNT(*) FROM valt_students')->fetchColumn() + 1;
-        $studentId = 'VALT-' . $year . '-' . str_pad($count, 4, '0', STR_PAD_LEFT);
+        // Generate student ID — use MAX to avoid collisions when students are deleted
+        $year    = date('Y');
+        $lastNum = $pdo->query("SELECT MAX(CAST(SUBSTRING(student_id, 11) AS UNSIGNED)) FROM valt_students WHERE student_id LIKE 'VALT-{$year}-%'")->fetchColumn();
+        $studentId = 'VALT-' . $year . '-' . str_pad(($lastNum ?: 0) + 1, 4, '0', STR_PAD_LEFT);
 
         $finalSchool = ($school === 'Other') ? $schoolOther : $school;
 

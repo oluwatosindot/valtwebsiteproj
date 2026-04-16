@@ -170,14 +170,14 @@ if (isset($_GET['export'])) {
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename="valt_students_' . date('Y-m-d') . '.csv"');
         $out = fopen('php://output', 'w');
-        if ($rows) { fputcsv($out, array_keys($rows[0])); foreach ($rows as $r) fputcsv($out, $r); }
+        if ($rows) { fputcsv($out, array_keys($rows[0]), ',', '"', '\\'); foreach ($rows as $r) fputcsv($out, $r, ',', '"', '\\'); }
         fclose($out); exit;
     }
     if ($_GET['export'] === 'excel') {
         header('Content-Type: application/vnd.ms-excel; charset=utf-8');
         header('Content-Disposition: attachment; filename="valt_students_' . date('Y-m-d') . '.xls"');
         $out = fopen('php://output', 'w');
-        if ($rows) { fputcsv($out, array_keys($rows[0]), "\t"); foreach ($rows as $r) fputcsv($out, $r, "\t"); }
+        if ($rows) { fputcsv($out, array_keys($rows[0]), "\t", '"', '\\'); foreach ($rows as $r) fputcsv($out, $r, "\t", '"', '\\'); }
         fclose($out); exit;
     }
 }
