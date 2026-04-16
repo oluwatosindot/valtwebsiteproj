@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `valt_students` (
   `city`                    VARCHAR(100) NOT NULL,
   `school_name`             VARCHAR(255) NOT NULL,
   `school_other`            VARCHAR(255) DEFAULT NULL,
-  `programme_interest`      VARCHAR(100) DEFAULT NULL,
+  `programme_interest`      VARCHAR(500) DEFAULT NULL,
   `subjects_interest`       VARCHAR(255) DEFAULT NULL,
   `how_heard`               VARCHAR(100) DEFAULT NULL,
   `registered_at`           DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,

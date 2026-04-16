@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Please enter a valid parent/guardian email address.';
       if (!filter_var($email, FILTER_VALIDATE_EMAIL))
         $errors[] = 'Please enter a valid student email address.';
-      if (!in_array($grade, [8,9,10,11]))
+      if (!in_array($grade, [8,9,10,11,12]))
         $errors[] = 'Please select a valid grade (8–11).';
       if (empty($province)) $errors[] = 'Please select your province.';
       if (empty($city))     $errors[] = 'Please enter your city or town.';
