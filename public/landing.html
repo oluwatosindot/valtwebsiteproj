@@ -26,15 +26,19 @@
     <meta name="twitter:description" content="Choose between Academy education and Entrepreneurship innovation">
     <meta name="twitter:image" content="img/logo02.png">
 
+    <title>VALT - Choose Your Path</title>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/main.css">
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
 
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -55,7 +59,7 @@
             background-position: center;
         }
 
-        .video-overlay {
+        .bg-overlay {
             position: absolute;
             inset: 0;
             background: linear-gradient(135deg, rgba(10,25,41,0.78) 0%, rgba(42,157,143,0.62) 100%);
@@ -308,8 +312,8 @@
 
 <body>
     <div class="landing-container">
-        <!-- Video Overlay -->
-        <div class="video-overlay"></div>
+        <!-- Background Overlay -->
+        <div class="bg-overlay"></div>
 
         <!-- Content -->
         <div class="content-wrapper">
@@ -351,9 +355,9 @@
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/jquery-3.7.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
 
 </body>
 
