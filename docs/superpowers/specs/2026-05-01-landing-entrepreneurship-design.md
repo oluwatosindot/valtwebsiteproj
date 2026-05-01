@@ -27,7 +27,7 @@ No video file exists in the project. Use `img/banner-bg.jpg` as the CSS `backgro
 
 ### Visual Redesign
 
-- **Background:** `img/banner-bg.jpg` full-screen, overlaid with a `135deg` dark gradient (`rgba(10,25,41,0.75)` → `rgba(42,157,143,0.6)`)
+- **Background:** `img/banner-bg.jpg` as full-screen `background-image` (`background-size: cover; background-position: center`) on `.landing-container`. Place a separate overlay `<div>` with `position: absolute; inset: 0` using a `135deg` gradient (`rgba(10,25,41,0.75)` → `rgba(42,157,143,0.6)`) on top — this keeps the photo partially visible beneath the tint
 - **Layout:** VALT logo (`img/logo02.png`) centered at top. "Choose Your Path" heading + subtitle. Two large side-by-side clickable panels filling the lower portion of the viewport (~45% width each with a gap).
 - **Panel default state (always visible):**
   - Icon (Font Awesome): graduation cap for Academy, rocket for Entrepreneurship
@@ -52,7 +52,12 @@ No video file exists in the project. Use `img/banner-bg.jpg` as the CSS `backgro
 ### Meta
 - `<title>VALT - Choose Your Path</title>`
 - Favicon: `img/logo02.png`
-- Retain existing OG and Twitter card meta tags
+- OG tags: retain existing (og:type, og:title, og:description, og:image, og:url)
+- Twitter card tags (complete set):
+  - `<meta name="twitter:card" content="summary_large_image">`
+  - `<meta name="twitter:title" content="VALT - Choose Your Path">`
+  - `<meta name="twitter:description" content="Choose between Academy education and Entrepreneurship innovation">`
+  - `<meta name="twitter:image" content="img/logo02.png">`
 
 ---
 
@@ -90,7 +95,8 @@ Brand reference: VALT Entrepreneurship brand guide — "V" with key logo, deep p
 ### CSS & JS Strategy
 **CSS** — load via `../css/` relative paths:
 - `../css/linearicons.css`
-- `../css/font-awesome.min.css`
+- `../css/font-awesome.min.css` (FA4 — kept for existing icon usage in main.css)
+- `https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css` (CDN — FA6 for all new icons specified in this spec, e.g. `fas fa-lightbulb`, `fas fa-chart-line`, `fas fa-piggy-bank`)
 - `../css/bootstrap.css`
 - `../css/magnific-popup.css`
 - `../css/nice-select.css`
