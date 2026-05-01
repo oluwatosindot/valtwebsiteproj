@@ -17,27 +17,42 @@ The Academy site (`public/academy/`) is **not touched** except as a structural r
 
 ## Task 1 — Landing Page
 
-### Problem
-`landing.html` has a broken HTML structure: raw CSS and a duplicate HTML body are embedded inside the `<body>` tag (lines 330–395), causing invalid markup. The page renders because the second copy of the content (lines 396–469) is what displays.
+### Baseline State
+The current `landing.html` has two issues that both need addressing:
+1. **Broken HTML:** Raw CSS and a duplicate HTML body block are injected inside the `<body>` after the `<!-- Content -->` comment. Remove this duplicate CSS/HTML text block, keeping only the single clean content wrapper below it.
+2. **Visual redesign needed:** Even after the broken markup is removed, the background is a dark gradient (the `<video>` reference points to a missing file). The visual redesign below replaces this.
 
-### Fix
-Remove lines 330–395 (the raw CSS/HTML text inside the body), leaving only the single clean content wrapper.
+### Background Asset
+No video file exists in the project. Use `img/banner-bg.jpg` as the CSS `background-image` on the container (`background-size: cover; background-position: center`). Remove the `<video>` element entirely.
 
 ### Visual Redesign
-The current design has small glass-morphism cards at low contrast. The redesign:
 
-- **Background:** Full-screen video (`img/background-video.mp4`) at higher opacity (~0.4) with a dark gradient overlay for readability. Static image fallback if video fails.
-- **Layout:** VALT logo centered at top. "Choose Your Path" heading + subtitle. Two large side-by-side clickable panels occupying the lower half of the viewport.
-- **Panels:** Wide prominent blocks (not small cards). On hover:
-  - Academy panel: teal overlay (`#2a9d8f`)
-  - Entrepreneurship panel: deep purple overlay (`#3B0F5E`)
-  - Each shows a label + animated arrow on hover
-- **Typography:** Modern, clean — Inter font (already in use)
-- **Responsive:** Panels stack vertically on mobile
+- **Background:** `img/banner-bg.jpg` full-screen, overlaid with a `135deg` dark gradient (`rgba(10,25,41,0.75)` → `rgba(42,157,143,0.6)`)
+- **Layout:** VALT logo (`img/logo02.png`) centered at top. "Choose Your Path" heading + subtitle. Two large side-by-side clickable panels filling the lower portion of the viewport (~45% width each with a gap).
+- **Panel default state (always visible):**
+  - Icon (Font Awesome): graduation cap for Academy, rocket for Entrepreneurship
+  - Title text: "ACADEMY" / "ENTREPRENEURSHIP" in bold uppercase
+  - Both panels visible and legible before hover
+- **Panel hover state:**
+  - Academy: teal overlay (`#2a9d8f`) fades in over the panel
+  - Entrepreneurship: deep purple overlay (`#3B0F5E`) fades in over the panel
+  - Short description text fades/slides in
+  - Arrow (`→`) animates in — style at implementer's discretion
+- **Typography:** Inter font (already imported)
+- **Responsive:** Panels stack vertically on mobile (< 768px), each full width
+
+### Panel Descriptions (shown on hover)
+- **Academy:** "Empowering young adults and adults with lifelong skills in financial literacy, emotional intelligence, and entrepreneurship"
+- **Entrepreneurship:** "Building innovative businesses and ventures with cutting-edge strategies and mentorship for aspiring entrepreneurs"
 
 ### Links
 - Academy panel → `academy/index.html`
 - Entrepreneurship panel → `entrepreneurship/index.html`
+
+### Meta
+- `<title>VALT - Choose Your Path</title>`
+- Favicon: `img/logo02.png`
+- Retain existing OG and Twitter card meta tags
 
 ---
 
@@ -68,47 +83,94 @@ Brand reference: VALT Entrepreneurship brand guide — "V" with key logo, deep p
 
 - Purple (`#3B0F5E`) header background
 - Gold (`#C9A84C`) hover and active link states
-- VALT logo (existing `../img/logo02.png`) in header
+- Logo: `../img/logo02.png` with "Educational enrichment provider" tagline (matching Academy pattern)
+- Gallery is **intentionally excluded** from the nav (out of scope)
 - No Register button for now
 
-### CSS Strategy
-- Reuse Academy's existing CSS stack: `bootstrap.css`, `font-awesome.min.css`, `main.css`, `linearicons.css`, etc. via `../css/` relative paths
-- Add one new file: `entrepreneurship/entrepreneurship-theme.css` for all purple/gold overrides
-- No changes to `main.css` or `valt-theme.css`
+### CSS & JS Strategy
+**CSS** — load via `../css/` relative paths:
+- `../css/linearicons.css`
+- `../css/font-awesome.min.css`
+- `../css/bootstrap.css`
+- `../css/magnific-popup.css`
+- `../css/nice-select.css`
+- `../css/animate.min.css`
+- `../css/owl.carousel.css`
+- `../css/jquery-ui.css`
+- `../css/main.css`
+- `entrepreneurship-theme.css` (local, replaces `valt-theme.css` — do NOT load valt-theme.css)
+
+**JS** — mirror exactly the Academy index.html pattern (all pages):
+- `../js/vendor/jquery-2.2.4.min.js`
+- `https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js` (CDN)
+- `../js/vendor/bootstrap.min.js`
+- `../js/easing.min.js`
+- `../js/hoverIntent.js`
+- `../js/superfish.min.js`
+- `../js/jquery.ajaxchimp.min.js`
+- `../js/jquery.magnific-popup.min.js`
+- `../js/jquery.tabs.min.js`
+- `../js/jquery.nice-select.min.js`
+- `../js/owl.carousel.min.js`
+- `../js/mail-script.js`
+- `../js/main.js`
+
+No changes to `main.css` or `valt-theme.css`.
+
+### Page Titles & Meta
+| Page | Title |
+|------|-------|
+| index.html | `VALT Entrepreneurship - Build Your Future` |
+| about.html | `About Us - VALT Entrepreneurship` |
+| courses.html | `Programmes - VALT Entrepreneurship` |
+| contact.html | `Contact Us - VALT Entrepreneurship` |
+
+All pages: favicon `../img/logo02.png`. Include OG and Twitter card meta tags matching the Academy pattern, adapted for Entrepreneurship content.
 
 ### Page Content
 
 **index.html — Home**
-- Hero: full-width purple banner, VALT Entrepreneurship logo, tagline ("Build Your Future"), gold CTA button
-- Below hero: 3 highlight cards — Ideation & Validation, Startup Acceleration, Growth Strategy
-- Brief intro paragraph about VALT Entrepreneurship
+- Hero: full-width purple banner (`#3B0F5E`), logo + "VALT Entrepreneurship" label, tagline ("Build Your Future"), gold CTA button linking to `courses.html`
+- Intro paragraph: "VALT Entrepreneurship supports aspiring entrepreneurs in Durban, KZN, South Africa with cutting-edge strategies and mentorship"
+- 3 highlight cards with icons, titles, and descriptions:
+
+| Icon | Title | Description |
+|------|-------|-------------|
+| `fa-lightbulb` | Ideation & Validation | Transform your ideas into viable business concepts through market research and validation methodologies. |
+| `fa-rocket` | Startup Acceleration | Fast-track your startup with our intensive accelerator program, mentorship, and funding opportunities. |
+| `fa-chart-line` | Growth Strategy | Scale your business with proven growth strategies, digital marketing, and operational excellence. |
 
 **about.html — About**
-- Purple hero banner with page title
-- Mission + Vision sections
-- "Who We Are" paragraph (VALT founded 2019, South Africa)
+- Purple hero banner with "About Us" title + breadcrumb (`Home → About Us`)
+- Mission: empower aspiring entrepreneurs with the tools, knowledge, and network to build successful businesses
+- Vision: a thriving entrepreneurial ecosystem across South Africa
+- "Who We Are" paragraph: VALT founded 2019, Durban KZN, South Africa
 - Same layout pattern as `academy/about.html`
 
 **courses.html — Programmes**
-- Purple hero banner
+- Purple hero banner with "Our Programmes" title + breadcrumb (`Home → Programmes`)
 - 6 programme cards in a 3-column grid (md: 2-col, sm: 1-col):
-  1. Ideation & Validation
-  2. Startup Acceleration
-  3. Growth Strategy
-  4. Network & Community
-  5. Funding & Investment
-  6. Business Certification
-- Cards: white background, purple icon, gold hover border
+
+| Icon | Title | Description |
+|------|-------|-------------|
+| `fa-lightbulb` | Ideation & Validation | Transform your ideas into viable business concepts through market research and validation methodologies. |
+| `fa-rocket` | Startup Acceleration | Fast-track your startup with our intensive accelerator program, mentorship, and funding opportunities. |
+| `fa-chart-line` | Growth Strategy | Scale your business with proven growth strategies, digital marketing, and operational excellence. |
+| `fa-users` | Network & Community | Join a thriving community of entrepreneurs, investors, and industry experts dedicated to your success. |
+| `fa-piggy-bank` | Funding & Investment | Access funding opportunities, pitch competitions, and connect with potential investors. |
+| `fa-certificate` | Business Certification | Earn recognised certifications in entrepreneurship, business management, and innovation. |
+
+- Cards: white/cream background, purple icon, gold hover border
 
 **contact.html — Contact**
-- Purple hero banner
-- Contact form (Name, Email, Message, Submit)
-- Contact details section
-- Same layout as `academy/contact.html`
+- Purple hero banner with "Contact Us" title + breadcrumb (`Home → Contact Us`)
+- Left column: address (Durban, KZN / South Africa), WhatsApp (061 461 0828 → `https://wa.me/27614610828`), email (`info@valt.co.za`)
+- Right column: contact form with fields: Name, Email, Subject, Message, Submit button
+- Form action: `../mail.php` method `POST` — note this differs from `academy/contact.html` which uses `mail.php` (broken path from sub-directory); `../mail.php` is correct for the entrepreneurship sub-directory
 
 ### Out of Scope
-- Gallery page (not built yet)
-- Register functionality (planned later — will tie into age-based registration for Academy)
+- Gallery page
+- Register functionality (planned later — age-based registration for Academy is a separate task)
 - Academy registration form changes (separate task)
 
 ---
